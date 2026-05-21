@@ -2,6 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Org](https://img.shields.io/badge/Org-CommonIntents-darkgray.svg)](https://github.com/CommonIntents)
+[![简体中文](https://img.shields.io/badge/文档-简体中文-3671c9)](README.zh-CN.md)
 
 **Version**: 1.0.0-draft
 **Status**: Working Group Internal Draft

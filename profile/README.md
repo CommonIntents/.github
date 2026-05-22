@@ -1,3 +1,23 @@
+> **CommonIntents** — the open protocol family for AI-native interaction.
+> CIS defines *what* AI wants. CAP defines *what* AI can do.
+> **Trust must be proven, not assumed.**
+
+---
+
+### 📖 Where to start?
+
+| I want to... | Start here |
+|:---|:---|
+| Understand the big picture | [Constitution](#cis-cap-protocol-family-constitution) (scroll down) |
+| Integrate CIS into my tool | [CIS Specification](https://github.com/CommonIntents/CIS) → [Mapping Guide](https://github.com/CommonIntents/CIS/blob/main/guides/mapping-guide.md) |
+| Add HITL approval to my workflow | [CAP Specification](https://github.com/CommonIntents/CAP) |
+| Understand how transport binding works | [CIB Specification](https://github.com/CommonIntents/CIB) |
+| Set up secure mTLS transport | [CISS Specification](https://github.com/CommonIntents/CISS) |
+| See a working reference implementation | [Cellrix](https://github.com/Jasonmilk/Cellrix) |
+| Contribute to the protocols | [Contributing Guide](https://github.com/CommonIntents/.github/blob/main/CONTRIBUTING.md) |
+
+---
+
 # CIS/CAP Protocol Family Constitution
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)

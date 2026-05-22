@@ -1,5 +1,7 @@
 # SECURITY.md
 
+[![简体中文](https://img.shields.io/badge/文档-简体中文-3671c9)](SECURITY.zh-CN.md)
+
 ## Ecosystem Security Policy
 
 **Version**: v0.3.2

@@ -162,6 +162,8 @@ CIS removes syntax from AI's list of responsibilities. AI does not need to worry
 | **CAP** | Drafting in progress | Capability authentication and HITL decisions |
 | **CAPS** | Future phase | Decentralized swarm trust network |
 
+All protocol specifications are published via content addressing (CID). Their authoritative versions are identified by CID, independent of any specific platform or storage service.
+
 | Reference Implementation | Status |
 |:---|:---|
 | **Cellrix** | Continuously evolving |

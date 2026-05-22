@@ -1,3 +1,23 @@
+> **CommonIntents** — 面向原生AI交互的开源协议体系
+> CIS 定义AI的意图诉求，CAP 界定AI的可执行能力
+> **信任必须被验证，而非主观假定。**
+
+---
+
+### 📖 快速入门指引
+
+| 需求目标 | 查阅入口 |
+|:---|:---|
+| 了解整体架构体系 | [体系总纲](#cis-cap-protocol-family-constitution)（下滑查看） |
+| 将CIS协议集成至应用工具 | [CIS 规范文档](https://github.com/CommonIntents/CIS) → [映射适配指南](https://github.com/CommonIntents/CIS/blob/main/guides/mapping-guide.md) |
+| 为业务流程添加人在回路审批 | [CAP 规范文档](https://github.com/CommonIntents/CAP) |
+| 弄懂传输绑定底层机制 | [CIB 规范文档](https://github.com/CommonIntents/CIB) |
+| 搭建双向认证安全传输链路 | [CISS 规范文档](https://github.com/CommonIntents/CISS) |
+| 查看可落地的参考实现项目 | [Cellrix](https://github.com/Jasonmilk/Cellrix) |
+| 参与协议优化与规范完善 | [贡献说明文档](https://github.com/CommonIntents/.github/blob/main/CONTRIBUTING.md) |
+
+---
+
 # CIS/CAP 协议族总纲
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)

@@ -12,7 +12,7 @@ Thank you for your interest in the CIS/CAP protocol family.
 
 ## What We Do Not Currently Accept
 
-- Fundamental changes to the core philosophy of the protocols (trust minimization, on-demand activation, semantic purity)
+- Fundamental changes to the core philosophy of the protocols (trust minimization, on-demand activation, syntactic standard)
   — these are the constitution of the protocols, not within the scope of RFC discussion
 
 ## How to Contribute

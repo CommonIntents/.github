@@ -49,33 +49,6 @@ Existing AI agent interaction protocols suffer from the following structural def
 
 **Trust must be proven, not assumed.**
 
-### The Native Language of AI
-
-The reasoning core of AI is non-linguistic. When a human thinks "bring that thing over," this intent, as it forms in the mind, is not Chinese, not English, not any language — it is a pure, pre-linguistic intent. The brain's language center then automatically translates it into the required form of expression.
-
-CIS is the pre-linguistic intent layer for AI. AI does not need to choose among multiple languages, nor does it need to understand the syntax of the underlying backend. It only needs one language — CIS. The existence of all other languages is completely transparent to AI.
-
-### The Water Philosophy
-
-- **Formless**: Poured into CLI, it becomes command parameters; into GUI, click events; into TUI, panel operations. CIS itself has no shape until it falls into a backend and acquires a concrete form.
-- **Non-competing**: It does not replace any existing infrastructure. It merely provides an extremely thin, unified semantic layer on top of all infrastructure.
-- **Nourishing all things**: Compatible with everything. Swap out a static mapping table, and CIS remains untouched.
-- **Ultimate energy efficiency**: Water flows downward, using gravity to do work. CIS uses compile-time deterministic code translation, consuming zero AI Tokens. Translated once, reused forever.
-
-### A World Without Syntax Errors
-
-In the world of CIS, syntax errors do not exist. Only logical errors and philosophical errors exist.
-
-| Error Type | Who Errs | Layer |
-|:---|:---|:---|
-| Syntax Error | Does not exist | CIS parser directly rejects illegal intents |
-| Logical Error | AI | Reasoning layer |
-| Philosophical Error | Protocol designer | Protocol layer |
-
-CIS removes syntax from AI's list of responsibilities. AI does not need to worry about "did I say this correctly?" — it only needs to focus on "did I think this correctly?"
-
----
-
 ## 3. Protocol Stack Architecture
 
 ```
@@ -111,17 +84,6 @@ CIS removes syntax from AI's list of responsibilities. AI does not need to worry
 │  · Audit extension                       │
 └─────────────────────────────────────────┘
 ```
-
----
-
-## 4. Layer Responsibilities
-
-| Protocol | One-Line Definition | Analogy |
-|:---|:---|:---|
-| **CIS** | What AI wants to do | Soul |
-| **CIB** | How the message is transmitted | Ligament |
-| **CISS** | Who is speaking, and whether the channel is secure | Skeleton |
-| **CAP** | What you can do, under what conditions, within what timeframe | Immune System |
 
 ---
 

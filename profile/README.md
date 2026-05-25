@@ -118,7 +118,7 @@ Existing AI agent interaction protocols suffer from the following structural def
 
 | Protocol | Status | Responsibility |
 |:---|:---|:---|
-| **CIS** | Existing, continuously evolving | Common intent semantic standard |
+| **CIS** | Existing, continuously evolving | Common intent syntactic standard |
 | **CIB** | Drafting in progress | Transport binding, format negotiation, integrity assurance |
 | **CISS** | Current implementation based on CIB | mTLS secure transport |
 | **CAP** | Drafting in progress | Capability authentication and HITL decisions |

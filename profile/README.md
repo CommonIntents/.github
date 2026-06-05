@@ -1,5 +1,5 @@
-> **CommonIntents** — the open protocol family for AI-native interaction.
-> CIS defines *what* AI wants. CAP defines *what* AI can do.
+> **CommonIntents-144** — the open protocol family for AI-native interaction.
+> INTENT-7 defines *what* AI wants. CAPABILITY-13 defines *what* AI can do.
 > **Trust must be proven, not assumed.**
 
 ---
@@ -8,20 +8,20 @@
 
 | I want to... | Start here |
 |:---|:---|
-| Understand the big picture | [Constitution](#cis-cap-protocol-family-constitution) (scroll down) |
-| Integrate CIS into my tool | [CIS Specification](https://github.com/CommonIntents/CIS) → [Mapping Guide](https://github.com/CommonIntents/CIS/blob/main/guides/mapping-guide.md) |
-| Add HITL approval to my workflow | [CAP Specification](https://github.com/CommonIntents/CAP) |
-| Understand how transport binding works | [CIB Specification](https://github.com/CommonIntents/CIB) |
-| Set up secure mTLS transport | [CISS Specification](https://github.com/CommonIntents/CISS) |
+| Understand the big picture | [Constitution](#cin7-cic13-protocol-family-constitution) (scroll down) |
+| Integrate INTENT-7 into my tool | [INTENT-7 Specification](https://github.com/CommonIntents/INTENT-7) → [Mapping Guide](https://github.com/CommonIntents/INTENT-7/blob/main/guides/mapping-guide.md) |
+| Add HITL approval to my workflow | [CAPABILITY-13 Specification](https://github.com/CommonIntents/CAPABILITY-13) |
+| Understand how transport binding works | [BIND-19 Specification](https://github.com/CommonIntents/BIND-19) |
+| Set up secure mTLS transport | [INTENT-7-SECURE Specification](https://github.com/CommonIntents/INTENT-7-SECURE) |
 | See a working reference implementation | [Cellrix](https://github.com/Jasonmilk/Cellrix) |
 | Contribute to the protocols | [Contributing Guide](https://github.com/CommonIntents/.github/blob/main/CONTRIBUTING.md) |
 
 ---
 
-# CIS/CAP Protocol Family Constitution
+# INTENT-7/CAPABILITY-13 Protocol Family Constitution
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Org](https://img.shields.io/badge/Org-CommonIntents-darkgray.svg)](https://github.com/CommonIntents)
+[![Org](https://img.shields.io/badge/Org-CommonIntents-144-darkgray.svg)](https://github.com/CommonIntents)
 [![简体中文](https://img.shields.io/badge/文档-简体中文-3671c9)](README.zh-CN.md)
 
 **Version**: 1.0.0-draft
@@ -53,7 +53,7 @@ Existing AI agent interaction protocols suffer from the following structural def
 
 ```
 ┌─────────────────────────────────────────┐
-│              CIS                         │
+│              INTENT-7                         │
 │  Common Intent Specification             │
 │  · Pure intent semantic standard         │
 │  · Transport-agnostic, crypto-agnostic   │
@@ -61,22 +61,22 @@ Existing AI agent interaction protocols suffer from the following structural def
 └─────────────────────────────────────────┘
                     ▲ Semantic Binding
 ┌─────────────────────────────────────────┐
-│              CIB                         │
-│  CIS/Transport Binding Protocol          │
+│              BIND-19                         │
+│  INTENT-7/Transport Binding Protocol          │
 │  · Transport format negotiation          │
 │  · Integrity check negotiation           │
 │  · Version compatibility declaration     │
 └─────────────────────────────────────────┘
                     ▲ Currently Bound To
 ┌─────────────────────────────────────────┐
-│              CISS                        │
+│              INTENT-7-SECURE                        │
 │  Secure Intent & Control Protocol        │
 │  · mTLS end-to-end encrypted transport   │
 │  · Client certificate identity proof     │
 └─────────────────────────────────────────┘
                     ▲ Carried By
 ┌─────────────────────────────────────────┐
-│              CAP                         │
+│              CAPABILITY-13                         │
 │  Capability Authentication Protocol      │
 │  · Capability declaration                │
 │  · Asynchronous decision queue           │
@@ -91,9 +91,9 @@ Existing AI agent interaction protocols suffer from the following structural def
 
 | Domain | Responsible Party |
 |:---|:---|
-| Intent semantics | CIS Protocol |
-| Transport binding, format negotiation, integrity | CIB Protocol |
-| Interaction standards and security semantics | CAP Protocol |
+| Intent semantics | INTENT-7 Protocol |
+| Transport binding, format negotiation, integrity | BIND-19 Protocol |
+| Interaction standards and security semantics | CAPABILITY-13 Protocol |
 | Message queue infrastructure | Existing middleware |
 | Identity infrastructure | Existing TLS/PKI ecosystem |
 | Storage and persistence | Application decides |
@@ -105,12 +105,12 @@ Existing AI agent interaction protocols suffer from the following structural def
 
 ## 6. Design Principles
 
-1. **Minimal Core, Optional Extensions**: CAP Core contains only irreducible atomic functions.
+1. **Minimal Core, Optional Extensions**: CAPABILITY-13 Core contains only irreducible atomic functions.
 2. **Declarative Activation, On-Demand Execution**: Advanced features are activated only when explicitly declared; not declared means zero overhead.
 3. **Separation of Concerns, Ecosystem Synergy**: Protocol defines semantic standards; infrastructure provides implementation pipelines.
 4. **Zero-Dependency Ready, Progressive Enhancement**: Basic compatibility requires only HTTP + JSON.
 5. **Maximum Embrace, Minimum Exclusion**: Define only "what is correct," not "how to do it."
-6. **Semantically Pure, Transport-Agnostic, Backend-Agnostic**: CIS is an eternal intent language, isolating all changes through CIB and the static mapping layer.
+6. **Semantically Pure, Transport-Agnostic, Backend-Agnostic**: INTENT-7 is an eternal intent language, isolating all changes through BIND-19 and the static mapping layer.
 
 ---
 
@@ -118,10 +118,10 @@ Existing AI agent interaction protocols suffer from the following structural def
 
 | Protocol | Status | Responsibility |
 |:---|:---|:---|
-| **CIS** | Existing, continuously evolving | Common intent syntactic standard |
-| **CIB** | Drafting in progress | Transport binding, format negotiation, integrity assurance |
-| **CISS** | Current implementation based on CIB | mTLS secure transport |
-| **CAP** | Drafting in progress | Capability authentication and HITL decisions |
+| **INTENT-7** | Existing, continuously evolving | Common intent syntactic standard |
+| **BIND-19** | Drafting in progress | Transport binding, format negotiation, integrity assurance |
+| **INTENT-7-SECURE** | Current implementation based on BIND-19 | mTLS secure transport |
+| **CAPABILITY-13** | Drafting in progress | Capability authentication and HITL decisions |
 | **CAPS** | Future phase | Decentralized swarm trust network |
 
 All protocol specifications are published via content addressing (CID). Their authoritative versions are identified by CID, independent of any specific platform or storage service.
@@ -132,4 +132,4 @@ All protocol specifications are published via content addressing (CID). Their au
 
 ---
 
-*This constitution is maintained by the CIS/CAP Protocol Working Group.*
+*This constitution is maintained by the INTENT-7/CAPABILITY-13 Protocol Working Group.*

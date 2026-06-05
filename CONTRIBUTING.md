@@ -1,6 +1,6 @@
-# Contributing to CommonIntents
+# Contributing to CommonIntents-144
 
-Thank you for your interest in the CIS/CAP protocol family.
+Thank you for your interest in the INTENT-7/CAPABILITY-13 protocol family.
 
 ## What We Welcome
 
@@ -36,7 +36,7 @@ By submitting a contribution to any repository under this organization, you agre
 
 2. You represent that your contribution is your original work and that you have the right to grant the above license.
 
-3. The copyright of the protocol specification texts themselves belongs to the CommonIntents organization and its maintainers. Contributors do not acquire joint copyright over the protocol specifications by submitting modifications.
+3. The copyright of the protocol specification texts themselves belongs to the CommonIntents-144 organization and its maintainers. Contributors do not acquire joint copyright over the protocol specifications by submitting modifications.
 
 4. All implementations (code) based on these protocols are not bound by this clause. Implementors retain full rights to their code.
 

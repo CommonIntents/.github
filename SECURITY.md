@@ -12,7 +12,7 @@
 
 ## 1. Security Philosophy
 
-The CommonIntents ecosystem adheres to the principle of **trust minimization**.
+The CommonIntents-144 ecosystem adheres to the principle of **trust minimization**.
 
 - **Do not trust the submitter's claims.** Every adapter entering the shared knowledge tree must undergo automated review and cryptographic signing.
 - **Do not rely on manual review.** Security is programmatic. AI reviews AI, programs review programs, and Tuck serves as the final safety net. Humans intervene only in appeals — as the supreme court, not the daily police.
@@ -48,7 +48,7 @@ Submit (Source Code) → AI Semantic Review → Static AST Review (Source Code) 
 
 **Layer 1: AI Semantic Review**
 
-- Analyzes the code structure and CIS/CAP declarations of the adapter
+- Analyzes the code structure and INTENT-7/CAPABILITY-13 declarations of the adapter
 - Detects semantic inconsistencies, over-declaration, and hidden behaviors
 - **Only analyzes code structure and protocol declarations; does not read comments, docstrings, or any natural language descriptions**
 - AI review results serve only as classification suggestions and reference weights; they must not be the sole basis for admission. The results of Layer 2 (AST) and Layer 3 (Sandbox) hold higher adjudication priority
@@ -66,7 +66,7 @@ Submit (Source Code) → AI Semantic Review → Static AST Review (Source Code) 
 - Compiles the reviewed source code into WASM bytecode within a TEE or official build pipeline
 - The compilation process is reproducible; any third party can independently verify the consistency between the compilation result and the source code
 - Pre-compiled binaries submitted locally by the submitter are not accepted
-- **Resource Protection**: The build pipeline enforces strict size and complexity limits on submitted source code and implements dynamic rate limiting based on the submitter's CISS certificate to prevent malicious high-frequency submissions from exhausting public compilation resources
+- **Resource Protection**: The build pipeline enforces strict size and complexity limits on submitted source code and implements dynamic rate limiting based on the submitter's INTENT-7-SECURE certificate to prevent malicious high-frequency submissions from exhausting public compilation resources
 
 **Layer 4: Sandbox Dynamic Review**
 
@@ -105,7 +105,7 @@ The ecosystem provides multiple layers of knowledge trees; users choose their tr
 
 | Knowledge Tree | Maintainer | Trust Level | Entry Characteristics |
 |:---|:---|:---|:---|
-| **Official Tree** | CommonIntents Maintainers | Highest | Passes complete five-layer review + signature |
+| **Official Tree** | CommonIntents-144 Maintainers | Highest | Passes complete five-layer review + signature |
 | **Community Tree** | All Users | Popularity-driven | Auto-submitted, sorted by popularity; trust weight accumulated by usage frequency and cross-validation |
 | **Project Tree** | Project Maintainers | Higher than Community | Verified and signed by the project itself, serving specific scenarios |
 
@@ -124,10 +124,10 @@ Security policy is a runtime choice. The protocol does not mandate; users decide
 Any user (human or AI) can submit a vulnerability report, marking a specific adapter CID as "at risk."
 
 - The weight of a marking action is determined by the identity trustworthiness of the initiator:
-  - Officially signed nodes (CommonIntents maintainers): highest weight, effective immediately
-  - Verified long-term contributors (CISS mTLS certificate holders): medium weight
+  - Officially signed nodes (CommonIntents-144 maintainers): highest weight, effective immediately
+  - Verified long-term contributors (INTENT-7-SECURE mTLS certificate holders): medium weight
   - Anonymous or newly registered nodes: lowest weight, serves only as a reference signal
-- There is an upper limit on the number of negative markings a single CISS certificate holder can initiate per unit of time. If a high-weight node exhibits high-frequency, large-scale abnormal marking behavior, its feedback weight is automatically frozen, the relevant adapters are protected with a flag, and the case is forcibly sent to the appeal queue
+- There is an upper limit on the number of negative markings a single INTENT-7-SECURE certificate holder can initiate per unit of time. If a high-weight node exhibits high-frequency, large-scale abnormal marking behavior, its feedback weight is automatically frozen, the relevant adapters are protected with a flag, and the case is forcibly sent to the appeal queue
 - When the accumulation of negative markings of varying weights exceeds a dynamic threshold, the adapter is automatically downgraded or marked as unavailable
 - The threshold is dynamically adjusted by the security policy, not fixed to a single value
 - The AI review program continuously learns from feedback to improve review accuracy
@@ -141,10 +141,10 @@ Any user (human or AI) can submit a vulnerability report, marking a specific ada
 
 | Protocol | How This System References It |
 |:---|:---|
-| **CIS** | The intent types declared by adapters serve as the comparison baseline for AI semantic review |
-| **CAP** | The adapter's Manifest declares business risk level (`securityClass`), complementing the technical security level (Grade) |
-| **CISS** | mTLS identity verification ensures traceability of the submitter's identity |
-| **CIB** | Format negotiation ensures communication protocol consistency between review tools and adapters |
+| **INTENT-7** | The intent types declared by adapters serve as the comparison baseline for AI semantic review |
+| **CAPABILITY-13** | The adapter's Manifest declares business risk level (`securityClass`), complementing the technical security level (Grade) |
+| **INTENT-7-SECURE** | mTLS identity verification ensures traceability of the submitter's identity |
+| **BIND-19** | Format negotiation ensures communication protocol consistency between review tools and adapters |
 
 **Grade is the technical security level** (determined automatically by the review process): what this adapter is technically capable of doing.  
 **`securityClass` is the business risk level** (declared by the adapter author in the Manifest): how dangerous this operation is in a business context.  
@@ -154,12 +154,12 @@ Together, they form the complete risk profile of an adapter.
 
 ## 8. Knowledge Tree Independence
 
-The mapping table knowledge tree is an independent public asset of the CommonIntents ecosystem. It is physically isolated and logically independent from the internal knowledge trees of any specific implementation.
+The mapping table knowledge tree is an independent public asset of the CommonIntents-144 ecosystem. It is physically isolated and logically independent from the internal knowledge trees of any specific implementation.
 
-- The mapping table knowledge tree stores only translation rules from CIS intents to native operations
+- The mapping table knowledge tree stores only translation rules from INTENT-7 intents to native operations
 - It does not store any private memories, experiential principles, social relationships, or user profiles of any implementation
 - The review, signing, and distribution of the knowledge tree are defined by this security policy and do not depend on any external system
-- Any CIS/CAP-compatible implementation can load entries from the mapping table knowledge tree; the management of its own internal knowledge tree is completely independent
+- Any INTENT-7/CAPABILITY-13-compatible implementation can load entries from the mapping table knowledge tree; the management of its own internal knowledge tree is completely independent
 
 ---
 

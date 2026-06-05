@@ -1,5 +1,5 @@
-> **CommonIntents** — 面向原生AI交互的开源协议体系
-> CIS 定义AI的意图诉求，CAP 界定AI的可执行能力
+> **CommonIntents-144** — 面向原生AI交互的开源协议体系
+> INTENT-7 定义AI的意图诉求，CAPABILITY-13 界定AI的可执行能力
 > **信任必须被验证，而非主观假定。**
 
 ---
@@ -8,20 +8,20 @@
 
 | 需求目标 | 查阅入口 |
 |:---|:---|
-| 了解整体架构体系 | [体系总纲](#cis-cap-protocol-family-constitution)（下滑查看） |
-| 将CIS协议集成至应用工具 | [CIS 规范文档](https://github.com/CommonIntents/CIS) → [映射适配指南](https://github.com/CommonIntents/CIS/blob/main/guides/mapping-guide.md) |
-| 为业务流程添加人在回路审批 | [CAP 规范文档](https://github.com/CommonIntents/CAP) |
-| 弄懂传输绑定底层机制 | [CIB 规范文档](https://github.com/CommonIntents/CIB) |
-| 搭建双向认证安全传输链路 | [CISS 规范文档](https://github.com/CommonIntents/CISS) |
+| 了解整体架构体系 | [体系总纲](#cin7-cic13-protocol-family-constitution)（下滑查看） |
+| 将CIS协议集成至应用工具 | [INTENT-7 规范文档](https://github.com/CommonIntents/INTENT-7) → [映射适配指南](https://github.com/CommonIntents/INTENT-7/blob/main/guides/mapping-guide.md) |
+| 为业务流程添加人在回路审批 | [CAPABILITY-13 规范文档](https://github.com/CommonIntents/CAPABILITY-13) |
+| 弄懂传输绑定底层机制 | [BIND-19 规范文档](https://github.com/CommonIntents/BIND-19) |
+| 搭建双向认证安全传输链路 | [INTENT-7-SECURE 规范文档](https://github.com/CommonIntents/INTENT-7-SECURE) |
 | 查看可落地的参考实现项目 | [Cellrix](https://github.com/Jasonmilk/Cellrix) |
 | 参与协议优化与规范完善 | [贡献说明文档](https://github.com/CommonIntents/.github/blob/main/CONTRIBUTING.md) |
 
 ---
 
-# CIS/CAP 协议族总纲
+# INTENT-7/CAPABILITY-13 协议族总纲
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Org](https://img.shields.io/badge/Org-CommonIntents-darkgray.svg)](https://github.com/CommonIntents)
+[![Org](https://img.shields.io/badge/Org-CommonIntents-144-darkgray.svg)](https://github.com/CommonIntents)
 
 ## 一、问题陈述
 
@@ -45,29 +45,29 @@
 
 ```
 ┌─────────────────────────────────────────┐
-│              CIS                         │
+│              INTENT-7                         │
 │  通用意图与控制协议                      │
 │  · 纯粹的意图语义标准                    │
 │  · 传输无关，加密无关，载体无关          │
 └─────────────────────────────────────────┘
                     ▲ 语义绑定
 ┌─────────────────────────────────────────┐
-│              CIB                         │
-│  CIS/传输绑定协议                        │
+│              BIND-19                         │
+│  INTENT-7/传输绑定协议                        │
 │  · 传输格式协商（JSON / 二进制）         │
 │  · 完整性校验协商                        │
 │  · 版本兼容性声明                        │
 └─────────────────────────────────────────┘
                     ▲ 当前绑定到
 ┌─────────────────────────────────────────┐
-│              CISS                        │
+│              INTENT-7-SECURE                        │
 │  安全意图与控制协议                      │
 │  · mTLS 端到端加密传输                   │
 │  · 客户端证书身份验证                    │
 └─────────────────────────────────────────┘
                     ▲ 承载于
 ┌─────────────────────────────────────────┐
-│              CAP                         │
+│              CAPABILITY-13                         │
 │  能力认证协议                            │
 │  · 能力声明                              │
 │  · 异步决策队列                          │
@@ -80,9 +80,9 @@
 
 | 范畴 | 负责方 |
 |:---|:---|
-| 意图语义 | CIS 协议 |
-| 传输绑定、格式协商、完整性 | CIB 协议 |
-| 交互标准与安全语义 | CAP 协议 |
+| 意图语义 | INTENT-7 协议 |
+| 传输绑定、格式协商、完整性 | BIND-19 协议 |
+| 交互标准与安全语义 | CAPABILITY-13 协议 |
 | 消息队列管道 | 现有基建 |
 | 身份基础设施 | 现有 TLS/PKI 生态 |
 | 存储与持久化 | 应用自行决定 |
@@ -92,7 +92,7 @@
 
 ## 六、设计原则
 
-1. **核心极简，可选扩展**：CAP Core只含不可再分的原子功能
+1. **核心极简，可选扩展**：CAPABILITY-13 Core只含不可再分的原子功能
 2. **声明式激活，按需而动**：高级特性显式声明才激活，不声明即零开销
 3. **职责分离，生态共赢**：协议定义语义标准，基建提供实现管道
 4. **零依赖就绪，渐进式增强**：仅需HTTP+JSON即可基本兼容
@@ -103,10 +103,10 @@
 
 | 协议 | 状态 | 职责 |
 |:---|:---|:---|
-| **CIS** | 已有，持续演进 | 通用意图语义标准 |
-| **CIB** | 起草中 | 传输绑定、格式协商、完整性保障 |
-| **CISS** | 基于CIB的当前实现 | mTLS安全传输 |
-| **CAP** | 起草中 | 能力认证与HITL决策 |
+| **INTENT-7** | 已有，持续演进 | 通用意图语义标准 |
+| **BIND-19** | 起草中 | 传输绑定、格式协商、完整性保障 |
+| **INTENT-7-SECURE** | 基于CIB的当前实现 | mTLS安全传输 |
+| **CAPABILITY-13** | 起草中 | 能力认证与HITL决策 |
 | **CAPS** | 未来阶段 | 去中心化群信网络 |
 
 所有协议规范均采用内容寻址标识符（CID）对外发布。协议正式版本以CID作为唯一确权标识，不受平台、存储服务的约束。

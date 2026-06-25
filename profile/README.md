@@ -5,6 +5,8 @@
 [![Version](https://img.shields.io/badge/Version-1.0.0--RFC--4-blue)](https://github.com/CommonIntents)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
+**[中文版 (Chinese Version)](./README.zh-CN.md)**
+
 ---
 
 ## 1. Constitution & Vision
@@ -20,21 +22,9 @@ It establishes the foundational "law of interaction" for autonomous agents, cogn
 
 ---
 
-## 📖 Where to Start?
-| I want to... | Start here |
-| :--- | :--- |
-| Understand the big picture | [Constitution (scroll down)](#1-constitution--vision) |
-| Integrate INTENT-7 into my tool | [INTENT-7 Specification → Mapping Guide](https://github.com/CommonIntents/INTENT-7) |
-| Add HITL approval to my workflow | [CAPABILITY-13 Specification](https://github.com/CommonIntents/CAPABILITY-13) |
-| Understand how transport binding works | [BIND-19 Specification](https://github.com/CommonIntents/BIND-19) |
-| Set up secure mTLS transport | [INTENT-7-SECURE Specification](https://github.com/CommonIntents/INTENT-7-SECURE) |
-| See a working reference implementation | [Cellrix](https://github.com/CommonIntents/Cellrix) |
-| Contribute to the protocols | [Contributing Guide](CONTRIBUTING.md) |
-
----
-
 ## 2. Protocol Stack Architecture (4-Layer Closed-Loop)
 CI-144 implements a strictly decoupled 4-layer architecture. Each layer delegates specific responsibilities downwards, ensuring purity and no cross-contamination of concerns.
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                 INTENT-7 (Semantic Layer)                   │
@@ -51,9 +41,9 @@ CI-144 implements a strictly decoupled 4-layer architecture. Each layer delegate
 │              CAPABILITY-13 (Capability Layer)               │
 │                                                             │
 │  • Dynamic Permission Mapping (capability_mapping.toml)     │
-│  • Ed25519 Signature Verification (DNSSEC-style)            │
-│  • Asynchronous Non-Blocking HITL Consensus                 │
-│  • GPG-style Key Rotation & Revocation                      │
+│  • Ed25519 Signature Verification (DNSSEC-style)           │
+│  • Asynchronous Non-Blocking HITL Consensus                │
+│  • GPG-style Key Rotation & Revocation                     │
 └──────────────────────────┬──────────────────────────────────┘
                            │
                            │ Capability Validation via BIND-19 Control Frame (0x03)
@@ -61,10 +51,10 @@ CI-144 implements a strictly decoupled 4-layer architecture. Each layer delegate
 ┌─────────────────────────────────────────────────────────────┐
 │                BIND-19 (Transport Layer)                    │
 │                                                             │
-│  • 8-Byte Fixed Frame Header (Version, Type, Channel, Seq)  │
-│  • 256-Channel Multiplexing (Priority Queues)               │
-│  • 0-RTT Version Negotiation (UDS Implicit Handshake)       │
-│  • IANA-style Frame Type Governance (0x00-0x0F Standard)    │
+│  • 8-Byte Fixed Frame Header (Version, Type, Channel, Seq) │
+│  • 256-Channel Multiplexing (Priority Queues)              │
+│  • 0-RTT Version Negotiation (UDS Implicit Handshake)      │
+│  • IANA-style Frame Type Governance (0x00-0x0F Standard)   │
 └──────────────────────────┬──────────────────────────────────┘
                            │
                            │ Binary Frames (Encrypted)
@@ -73,9 +63,9 @@ CI-144 implements a strictly decoupled 4-layer architecture. Each layer delegate
 │             INTENT-7-SECURE (Security Layer)                │
 │                                                             │
 │  • Mandatory mTLS 1.3 (Public Networks)                     │
-│  • 0ms Overhead SO_PEERCRED Verification (Local UDS)        │
-│  • Edge Gateway + KMS Credential Isolation Boundary         │
-│  • Certificate Pinning & Rotation (L0 Gene Lock)            │
+│  • 0ms Overhead SO_PEERCRED Verification (Local UDS)       │
+│  • Edge Gateway + KMS Credential Isolation Boundary        │
+│  • Certificate Pinning & Rotation (L0 Gene Lock)           │
 └──────────────────────────┬──────────────────────────────────┘
                            │
                            │ Encrypted Byte Stream
@@ -188,28 +178,25 @@ traceparent: 00-<trace-id>-<span-id>-01
 
 ## 9. Contributing
 We adhere to a strict RFC (Request for Comments) process.  
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting proposals.
+Please read [CONTRIBUTING.md](../CONTRIBUTING.md) before submitting proposals.
 
 ## 10. Security
 Security is the foundation of CI-144.  
-For vulnerability reporting, see [SECURITY.md](SECURITY.md).
+For vulnerability reporting, see [SECURITY.md](../SECURITY.md).
+
+---
+
+## 11. License & Attribution
+CI-144 is licensed under the **Apache License 2.0**. See [LICENSE](../LICENSE) for full text.
+
+### Attribution Notice
+This project is inspired by open standards including HTTP/2, TLS 1.3, OAuth 2.0, 
+JSON-RPC, and W3C Trace Context. See [NOTICE](../NOTICE) for detailed attribution.
+
+### Technical Heritage
+For detailed technical comparison with existing protocols, see [ACKNOWLEDGMENTS.md](../ACKNOWLEDGMENTS.md).
 
 ---
 
 **CommonIntents-144 © 2026 - Present**  
-
----
-
-## License & Attribution
-
-CI-144 is licensed under the **Apache License 2.0**. See [LICENSE](LICENSE) for full text.
-
-### Attribution Notice
-
-This project is inspired by open standards including HTTP/2, TLS 1.3, OAuth 2.0, 
-JSON-RPC, and W3C Trace Context. See [NOTICE](NOTICE) for detailed attribution.
-
-### Technical Heritage
-
-For detailed technical comparison with existing protocols, see [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md).
-
+**Licensed under Apache 2.0**

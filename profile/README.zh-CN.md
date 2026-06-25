@@ -197,4 +197,15 @@ traceparent: 00-<trace-id>-<span-id>-01
 ---
 
 **CommonIntents-144 © 2026 - Present**  
-**基于 Apache 2.0 协议开源**
+
+---
+
+## 开源协议与归属声明
+
+CI-144 基于 **Apache License 2.0** 协议开源，完整协议文本请查看 [LICENSE](LICENSE)。
+
+### 归属声明
+本项目的设计参考了 HTTP/2、TLS 1.3、OAuth 2.0、JSON-RPC、W3C Trace Context 等多项开放标准。详细归属说明请查看 [NOTICE](NOTICE)。
+
+### 技术溯源
+与现有协议的详细技术对比，请参阅 [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md)。

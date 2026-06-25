@@ -197,4 +197,19 @@ For vulnerability reporting, see [SECURITY.md](SECURITY.md).
 ---
 
 **CommonIntents-144 © 2026 - Present**  
-**Licensed under Apache 2.0**
+
+---
+
+## License & Attribution
+
+CI-144 is licensed under the **Apache License 2.0**. See [LICENSE](LICENSE) for full text.
+
+### Attribution Notice
+
+This project is inspired by open standards including HTTP/2, TLS 1.3, OAuth 2.0, 
+JSON-RPC, and W3C Trace Context. See [NOTICE](NOTICE) for detailed attribution.
+
+### Technical Heritage
+
+For detailed technical comparison with existing protocols, see [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md).
+

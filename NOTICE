@@ -1,0 +1,66 @@
+CommonIntents-144 (CI-144)
+Copyright 2026 CommonIntents Organization
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+================================================================================
+ATTRIBUTION NOTICE
+================================================================================
+
+This project is inspired by or uses concepts from the following open standards
+and projects. We gratefully acknowledge their contributions to the field.
+
+--------------------------------------------------------------------------------
+INSPIRED BY / CONCEPTUAL DERIVATIONS
+--------------------------------------------------------------------------------
+
+1. HTTP/2 (RFC 7540)
+   - Source: https://httpwg.org/specs/rfc7540.html
+   - Concept Adopted: Frame-based multiplexing, stream prioritization
+   - License: IETF Trust License (BSD-style)
+
+2. TLS 1.3 (RFC 8446)
+   - Source: https://www.rfc-editor.org/rfc/rfc8446
+   - Concept Adopted: Mutual TLS (mTLS), cipher suite restrictions
+   - License: IETF Trust License (BSD-style)
+
+3. OAuth 2.0 (RFC 6749)
+   - Source: https://oauth.net/2/
+   - Concept Adopted: Capability-based access tokens, scope definitions
+   - License: IETF Trust License (BSD-style)
+
+4. JSON-RPC 2.0
+   - Source: https://www.jsonrpc.org/specification
+   - Concept Adopted: Request-response pattern, method invocation
+   - License: No explicit license (public domain equivalent)
+
+5. W3C Trace Context
+   - Source: https://www.w3.org/TR/trace-context/
+   - Concept Adopted: traceparent format, distributed tracing
+   - License: W3C Document License (royalty-free)
+
+6. DNSSEC (RFC 4033-4035)
+   - Source: https://www.dnssec.net/
+   - Concept Adopted: Signature chain verification, key signing
+   - License: IETF Trust License (BSD-style)
+
+--------------------------------------------------------------------------------
+THIRD-PARTY DEPENDENCIES
+--------------------------------------------------------------------------------
+
+This project may use the following third-party libraries (implementation phase):
+- To be listed during implementation
+
+================================================================================
+IMPORTANT DISCLAIMER
+================================================================================
+
+This project DOES NOT include code or text from the above projects.
+All implementations in CI-144 are original work by the CommonIntents contributors.
+The above are listed solely for attribution and transparency purposes.
+
+For detailed technical comparison, see ACKNOWLEDGMENTS.md.

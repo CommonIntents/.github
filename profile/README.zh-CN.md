@@ -1,120 +1,200 @@
-> **CommonIntents-144** — 面向原生AI交互的开源协议体系
-> INTENT-7 定义AI的意图诉求，CAPABILITY-13 界定AI的可执行能力
-> **信任必须被验证，而非主观假定。**
+# CommonIntents-144 (CI-144)
+**面向无信任硅基原生网络的主权宪章**
+
+[![发布状态](https://img.shields.io/badge/Status-Official_Release-2ea44f)](https://github.com/CommonIntents)
+[![版本号](https://img.shields.io/badge/Version-1.0.0--RFC--4-blue)](https://github.com/CommonIntents)
+[![开源协议](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ---
 
-### 📖 快速入门指引
+## 1. 宪章与设计愿景
+**核心信念**：  
+**「信任必须被证明，而非被假设。」**
 
-| 需求目标 | 查阅入口 |
-|:---|:---|
-| 了解整体架构体系 | [体系总纲](#cin7-cic13-protocol-family-constitution)（下滑查看） |
-| 将CIS协议集成至应用工具 | [INTENT-7 规范文档](https://github.com/CommonIntents/INTENT-7) → [映射适配指南](https://github.com/CommonIntents/INTENT-7/blob/main/guides/mapping-guide.md) |
-| 为业务流程添加人在回路审批 | [CAPABILITY-13 规范文档](https://github.com/CommonIntents/CAPABILITY-13) |
-| 弄懂传输绑定底层机制 | [BIND-19 规范文档](https://github.com/CommonIntents/BIND-19) |
-| 搭建双向认证安全传输链路 | [INTENT-7-SECURE 规范文档](https://github.com/CommonIntents/INTENT-7-SECURE) |
-| 查看可落地的参考实现项目 | [Cellrix](https://github.com/Jasonmilk/Cellrix) |
-| 参与协议优化与规范完善 | [贡献说明文档](https://github.com/CommonIntents/.github/blob/main/CONTRIBUTING.md) |
+CI-144 是一套**去中心化开放协议族**，设计目标覆盖：
+- AI原生交互与语义通信
+- 基于能力的安全体系与零信任访问控制
+- 加密传输与凭证隔离
 
----
-
-# INTENT-7/CAPABILITY-13 协议族总纲
-
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Org](https://img.shields.io/badge/Org-CommonIntents--144-darkgray.svg)](https://github.com/CommonIntents)
-
-## 一、问题陈述
-
-现有AI智能体交互协议存在以下结构性缺陷：
-
-- **中心化的信任根**：信任锚定在单一Host节点，单点故障即全局崩溃
-- **静态的权限模型**：权限无时效性约束，授予即永久持有
-- **阻塞式的人机协同**：HITL为同步模型，人类成为系统瓶颈
-- **安全责任的推诿**：协议只负责连接，安全实现交给下游
-- **强制性的功能设计**：所有特性一拥而上，无按需激活机制
+它为自主智能体、认知架构、分布式执行运行时建立了底层的「交互法则」——**不绑定任何具体实现**。
 
 ---
 
-## 二、哲学基础
+## 📖 快速入门导航
+| 我想要... | 从这里开始 |
+| :--- | :--- |
+| 了解整体设计蓝图 | [宪章（向下滚动）](#1-宪章与设计愿景) |
+| 将 INTENT-7 集成到我的工具中 | [INTENT-7 规范 → 映射指南](https://github.com/CommonIntents/INTENT-7) |
+| 为工作流添加人机审批机制 | [CAPABILITY-13 规范](https://github.com/CommonIntents/CAPABILITY-13) |
+| 理解传输绑定的工作原理 | [BIND-19 规范](https://github.com/CommonIntents/BIND-19) |
+| 搭建安全的双向 TLS 传输 | [INTENT-7-SECURE 规范](https://github.com/CommonIntents/INTENT-7-SECURE) |
+| 查看可运行的参考实现 | [Cellrix](https://github.com/CommonIntents/Cellrix) |
+| 参与协议共建 | [贡献指南](CONTRIBUTING.md) |
 
-### 核心信念
+---
 
-**信任必须被证明，而非假设。**
-
-## 三、协议栈架构
-
+## 2. 协议栈架构（四层闭环）
+CI-144 采用严格解耦的四层架构，每层向下委托专属职责，保证语义纯净、职责无交叉污染。
 ```
-┌─────────────────────────────────────────┐
-│              INTENT-7                         │
-│  通用意图与控制协议                      │
-│  · 纯粹的意图语义标准                    │
-│  · 传输无关，加密无关，载体无关          │
-└─────────────────────────────────────────┘
-                    ▲ 语义绑定
-┌─────────────────────────────────────────┐
-│              BIND-19                         │
-│  INTENT-7/传输绑定协议                        │
-│  · 传输格式协商（JSON / 二进制）         │
-│  · 完整性校验协商                        │
-│  · 版本兼容性声明                        │
-└─────────────────────────────────────────┘
-                    ▲ 当前绑定到
-┌─────────────────────────────────────────┐
-│              INTENT-7-SECURE                        │
-│  安全意图与控制协议                      │
-│  · mTLS 端到端加密传输                   │
-│  · 客户端证书身份验证                    │
-└─────────────────────────────────────────┘
-                    ▲ 承载于
-┌─────────────────────────────────────────┐
-│              CAPABILITY-13                         │
-│  能力认证协议                            │
-│  · 能力声明                              │
-│  · 异步决策队列                          │
-│  · 时效性扩展                            │
-│  · 审计扩展                              │
-└─────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│                 INTENT-7 (Semantic Layer)                   │
+│                                                             │
+│  • Structured Intent Declaration (FETCH/WRITE_NODE/TENTACLE)│
+│  • W3C Trace Context Integration (traceparent)              │
+│  • HXR Execution Record ↔ L3 Memory Zero-Copy Alignment    │
+│  • Pure JSON Payload, Transport-Agnostic                    │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+                           │ JSON Payload via BIND-19 Data Frame (0x01)
+                           ▼
+┌─────────────────────────────────────────────────────────────┐
+│              CAPABILITY-13 (Capability Layer)               │
+│                                                             │
+│  • Dynamic Permission Mapping (capability_mapping.toml)     │
+│  • Ed25519 Signature Verification (DNSSEC-style)            │
+│  • Asynchronous Non-Blocking HITL Consensus                 │
+│  • GPG-style Key Rotation & Revocation                      │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+                           │ Capability Validation via BIND-19 Control Frame (0x03)
+                           ▼
+┌─────────────────────────────────────────────────────────────┐
+│                BIND-19 (Transport Layer)                    │
+│                                                             │
+│  • 8-Byte Fixed Frame Header (Version, Type, Channel, Seq)  │
+│  • 256-Channel Multiplexing (Priority Queues)               │
+│  • 0-RTT Version Negotiation (UDS Implicit Handshake)       │
+│  • IANA-style Frame Type Governance (0x00-0x0F Standard)    │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+                           │ Binary Frames (Encrypted)
+                           ▼
+┌─────────────────────────────────────────────────────────────┐
+│             INTENT-7-SECURE (Security Layer)                │
+│                                                             │
+│  • Mandatory mTLS 1.3 (Public Networks)                     │
+│  • 0ms Overhead SO_PEERCRED Verification (Local UDS)        │
+│  • Edge Gateway + KMS Credential Isolation Boundary         │
+│  • Certificate Pinning & Rotation (L0 Gene Lock)            │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+                           │ Encrypted Byte Stream
+                           ▼
+                  Physical Network (TCP/IP / UDS)
 ```
-
-## 五、职责分离
-
-| 范畴 | 负责方 |
-|:---|:---|
-| 意图语义 | INTENT-7 协议 |
-| 传输绑定、格式协商、完整性 | BIND-19 协议 |
-| 交互标准与安全语义 | CAPABILITY-13 协议 |
-| 消息队列管道 | 现有基建 |
-| 身份基础设施 | 现有 TLS/PKI 生态 |
-| 存储与持久化 | 应用自行决定 |
-| 业务权限逻辑 | 应用自行实现 |
-
-**协议只定义交互语义标准。任何不定义语义、只规定实现方式的东西，不属于协议的责任范围。**
-
-## 六、设计原则
-
-1. **核心极简，可选扩展**：CAPABILITY-13 Core只含不可再分的原子功能
-2. **声明式激活，按需而动**：高级特性显式声明才激活，不声明即零开销
-3. **职责分离，生态共赢**：协议定义语义标准，基建提供实现管道
-4. **零依赖就绪，渐进式增强**：仅需HTTP+JSON即可基本兼容
-5. **最大包容，最小排他**：只定义“什么是对的”，不规定“怎么做”
-6. **语义纯粹，传输无关，载体无关**：CIS是永恒的意图语言
-
-## 七、协议状态
-
-| 协议 | 状态 | 职责 |
-|:---|:---|:---|
-| **INTENT-7** | 已有，持续演进 | 通用意图语义标准 |
-| **BIND-19** | 起草中 | 传输绑定、格式协商、完整性保障 |
-| **INTENT-7-SECURE** | 基于CIB的当前实现 | mTLS安全传输 |
-| **CAPABILITY-13** | 起草中 | 能力认证与HITL决策 |
-| **CAPS** | 未来阶段 | 去中心化群信网络 |
-
-所有协议规范均采用内容寻址标识符（CID）对外发布。协议正式版本以CID作为唯一确权标识，不受平台、存储服务的约束。
-
-| 参考实现 | 状态 |
-|:---|:---|
-| **Cellrix** | 持续演进 |
 
 ---
 
-*总纲由CIS/CAP协议工作组维护。*
+## 3. 协议状态矩阵
+四项核心规范均已通过最终技术评审，于 **2026-06-26** 正式冻结定稿。
+
+| 协议名称 | 状态 | 核心职责 | 遵循标准 | 版本 |
+| :--- | :---: | :--- | :--- | :---: |
+| **BIND-19** | ✅ **正式定稿** | 传输成帧与多路复用 | HTTP/2 成帧、QUIC 多路复用、IANA 注册表 | `v1.0.0-RFC-4` |
+| **CAPABILITY-13** | ✅ **正式定稿** | 能力认证与人机共识 | OAuth2 能力体系、DNSSEC 签名、GPG 密钥轮换 | `v1.0.0-RFC-4` |
+| **INTENT-7** | ✅ **正式定稿** | 结构化意图与内存对齐 | W3C 追踪上下文、JSON Schema | `v1.0.0-RFC-4` |
+| **INTENT-7-SECURE** | ✅ **正式定稿** | 双向 TLS 与边缘安全 | TLS 1.3 (RFC 8446)、PKCS#11、TPM | `v1.0.0-RFC-4` |
+
+---
+
+## 4. 设计哲学：Milk Zen 工程准则
+CI-144 严格遵循 **Milk Zen** 工程哲学，保障极致健壮性与理论纯净度：
+
+| 设计原则 | 在 CI-144 中的落地 |
+| :--- | :--- |
+| **1. 必有理论依据，绝不凭空臆造** | 所有协议均基于工业标准（TLS 1.3、W3C、IANA），无无理论支撑的自研「黑科技」。 |
+| **2. 求正确而非求快速** | 安全拥有绝对优先级：强制双向 TLS、禁用 TLS 1.2、密钥轮换原子执行。 |
+| **3. 彻底解耦，按需生长** | 各层独立自治：BIND-19 不解析意图语义，INTENT-7 不处理加密逻辑，扩展通过保留区间实现。 |
+| **4. 极致能效优先** | 本地 UDS 采用 `SO_PEERCRED` 校验（0 毫秒开销）；HXR 与 L3 内存零拷贝；摘要优先检索节省上下文窗口。 |
+| **5. 局部服从全局** | 版本协商取双方支持的最高交集；安全边界保护整栈；错误链路统一出口。 |
+
+---
+
+## 5. 闭环数据流
+```
+User Intent (INTENT-7 JSON)
+    │
+    ├─ metadata.traceparent: Global Trace ID (W3C Standard)
+    ├─ action: FETCH / WRITE_NODE / TENTACLE / FINISH / CANCEL
+    └─ params: Business parameters
+    │
+    ▼
+Capability Validation (CAPABILITY-13)
+    │
+    ├─ Check required_permissions against capability_mapping.toml
+    ├─ Ed25519 signature verification (Creator L0 Key)
+    └─ Trigger HITL consensus if high-risk (async, non-blocking)
+    │
+    ▼
+Frame Encapsulation (BIND-19)
+    │
+    ├─ FrameType: Data (0x01) / Control (0x03) / Error (0x06)
+    ├─ ChannelID: 0x00 (Control) / 0x01-0xFF (Data)
+    └─ Flags: FIN (0x01) / CON (0x02) / SEC (0x04)
+    │
+    ▼
+Secure Transmission (INTENT-7-SECURE)
+    │
+    ├─ Public Network: mTLS 1.3 (AES_256_GCM / CHACHA20_POLY1305)
+    ├─ Local UDS: SO_PEERCRED (UID/GID verification, 0ms overhead)
+    └─ Credential Injection: Edge Gateway + KMS (Zero-Knowledge to Sandbox)
+    │
+    ▼
+Physical Network (TCP/IP / UDS)
+    │
+    ▼
+Receiver (Memory Node / Execution Runtime)
+    │
+    └─ HXR Record written to L3 Episodic Memory (Zero-Copy)
+```
+
+---
+
+## 6. 错误码体系
+协议族内所有错误统一通过 BIND-19 错误帧（`0x06`）向上传递。
+
+| 所属协议 | 码值范围 | 典型错误 |
+| :--- | :--- | :--- |
+| **BIND-19** | `0x0400 - 0x05FF` | `INVALID_FRAME_HEADER` (0x0400)、`VERSION_MISMATCH` (0x0460) |
+| **CAPABILITY-13** | `0x0580 - 0x05FF` | `PERMISSION_DENIED` (0x0580)、`INVALID_CONFIGURATION_SIGNATURE` (0x05FA) |
+| **INTENT-7** | `0x0640 - 0x06FF` | `INVALID_PAYLOAD_SCHEMA` (0x0640)、`UNKNOWN_INTENT_VERB` (0x064A) |
+| **INTENT-7-SECURE** | `0x07D0 - 0x07FF` | `MTLS_HANDSHAKE_FAILED` (0x07D0)、`UNTRUSTED_PEER_UID` (0x07DA) |
+
+---
+
+## 7. 可追溯性与审计
+CI-144 中每一笔事务都可通过 W3C 追踪上下文标准实现全链路溯源：
+```
+traceparent: 00-<trace-id>-<span-id>-01
+             │    │          │        └─ trace-flags
+             │    │          └────────── 64-bit Span ID
+             │    └───────────────────── 128-bit Trace ID
+             └────────────────────────── version
+```
+- `traceparent` 起源于 INTENT-7 的元数据
+- 在 INTENT-7-SECURE 中与 TLS 会话 ID 绑定
+- 嵌入 L3 内存的 HXR 执行记录中
+- 支持跨进程、跨网络的完整因果链审计
+
+---
+
+## 8. 快速开始
+1. **阅读规范**：从 [BIND-19](https://github.com/CommonIntents/BIND-19) 开始，理解传输成帧机制。
+2. **实现客户端**：基于 8 字节固定头部结构进行帧的编码与解码。
+3. **加固通道**：按照 INTENT-7-SECURE 规范实现 `双向 TLS` 或 `SO_PEERCRED` 本地校验。
+4. **声明意图**：使用 INTENT-7 动词（FETCH、WRITE_NODE、TENTACLE）构建语义流程。
+
+---
+
+## 9. 贡献指南
+我们遵循严格的 RFC（意见征集）流程。  
+提交提案前请先阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。
+
+## 10. 安全说明
+安全是 CI-144 的基石。  
+漏洞反馈请查看 [SECURITY.md](SECURITY.md)。
+
+---
+
+**CommonIntents-144 © 2026 - Present**  
+**基于 Apache 2.0 协议开源**

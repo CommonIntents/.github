@@ -1,210 +1,305 @@
-# SECURITY.md
-
-[![简体中文](https://img.shields.io/badge/文档-简体中文-3671c9)](SECURITY.zh-CN.md)
-
-## Ecosystem Security Policy
-
-**Version**: v0.3.2
-**Status**: Active, long-term enforcement
-**Last Updated**: 2026-05-23
+# Security Policy
+**Version**: v1.0.0-RFC-4  
+**Status**: Active  
+**Last Updated**: 2026-06-26
 
 ---
 
 ## 1. Security Philosophy
+CI-144 is built on **Zero Trust Architecture** with the following core principles:
 
-The CommonIntents-144 ecosystem adheres to the principle of **trust minimization**.
-
-- **Do not trust the submitter's claims.** Every adapter entering the shared knowledge tree must undergo automated review and cryptographic signing.
-- **Do not rely on manual review.** Security is programmatic. AI reviews AI, programs review programs, and Tuck serves as the final safety net. Humans intervene only in appeals — as the supreme court, not the daily police.
-- **Do not bind to any platform.** The shared knowledge tree is based on IPLD DAG with CID content addressing. GitHub can perish, Cloudflare can perish, any single service provider can perish. CIDs endure. The entry point to the knowledge tree is the content hash, not a domain name.
-- **Do not depend on external infrastructure.** Dependence is always passive. The ecosystem must strengthen itself: any node can become a distribution node for the knowledge tree, and anyone can independently verify the signature and integrity of an adapter without trusting any third party.
-- **On-demand activation.** Users choose which knowledge tree to load from based on their own security requirements. Security policy is a runtime choice, not a protocol mandate.
-
-**Ecosystem autonomy, flowing smoothly. The task of humans is to continuously improve the review procedures; improving review procedures is to reduce human review.**
-
----
-
-## 2. Security Grade Definitions
-
-Adapters are classified into four grades based on technical capability boundaries:
-
-| Grade | Definition | Capability Boundary | Runtime Environment Constraint |
-|:---|:---|:---|:---|
-| **Grade 0** | Pure Function | Data format transformation and schema mapping only. I/O, network, and system calls strictly prohibited. | WASM sandbox, all system interfaces disabled |
-| **Grade 1** | Restricted Local I/O | Allowed to read/write specified restricted directories or configuration files. Network access prohibited. | Virtual filesystem mapping sandbox |
-| **Grade 2** | Restricted Network Access | Allowed HTTPS access to whitelisted API endpoints. Arbitrary network connections prohibited. | Network whitelist gateway filtering |
-| **Grade 3** | System-level Calls | Allowed to execute CLI commands, operate databases, and perform complex network interactions. | Physically isolated container; user bears ultimate risk |
+| Principle | Implementation |
+| :--- | :--- |
+| **1. Trust Nothing by Default** | All connections must authenticate via mTLS (public) or SO_PEERCRED (local) |
+| **2. Least Privilege** | No permissions are granted by default; all must be explicitly declared and approved |
+| **3. Defense in Depth** | Security enforced at 4 layers: Semantic, Capability, Transport, Security |
+| **4. No Security by Obscurity** | All cryptographic algorithms are public standards (TLS 1.3, Ed25519) |
+| **5. Auditability** | Every transaction traceable via W3C Trace Context standard |
 
 ---
 
-## 3. Autonomous Review Pipeline
+## 2. Supported Versions
+Only the following versions receive security updates:
 
-All adapters submitted to the shared knowledge tree pass through five automated review stages sequentially:
+| Version | Supported | End of Life |
+| :---: | :---: | :--- |
+| **1.0.0-RFC-4** | ✅ Yes | Not scheduled |
+| < 1.0.0 | ❌ No | Already ended |
 
+---
+
+## 3. Security Architecture
+CI-144 implements a 4-layer security model:
 ```
-Submit (Source Code) → AI Semantic Review → Static AST Review (Source Code) → Trusted Environment Compilation (WASM) → Sandbox Dynamic Review (WASM) → Tuck Automatic Grading & Signing → Enter Knowledge Tree
-                                                                                                                      ↘ Cannot Determine → Appeal Queue
+┌─────────────────────────────────────────────────────────┐
+│ Layer 4: Semantic Security (INTENT-7)                   │
+│   • JSON Schema validation                              │
+│   • Intent verb whitelist                               │
+│   • Metadata integrity check                            │
+└─────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│ Layer 3: Capability Security (CAPABILITY-13)            │
+│   • Permission mapping verification                     │
+│   • Ed25519 signature verification                      │
+│   • HITL consensus for high-risk operations             │
+└─────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│ Layer 2: Transport Security (BIND-19)                   │
+│   • Frame integrity checksum                            │
+│   • Sequence-based anti-replay                          │
+│   • Version negotiation downgrade protection            │
+└─────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│ Layer 1: Cryptographic Security (INTENT-7-SECURE)       │
+│   • mTLS 1.3 (public networks)                          │
+│   • SO_PEERCRED (local UDS)                             │
+│   • Certificate pinning (L0 Gene Lock)                  │
+│   • Credential isolation (Edge Gateway + KMS)           │
+└─────────────────────────────────────────────────────────┘
 ```
 
-**Layer 1: AI Semantic Review**
+### 3.1 Layer 1: Cryptographic Security
 
-- Analyzes the code structure and INTENT-7/CAPABILITY-13 declarations of the adapter
-- Detects semantic inconsistencies, over-declaration, and hidden behaviors
-- **Only analyzes code structure and protocol declarations; does not read comments, docstrings, or any natural language descriptions**
-- AI review results serve only as classification suggestions and reference weights; they must not be the sole basis for admission. The results of Layer 2 (AST) and Layer 3 (Sandbox) hold higher adjudication priority
+| Mechanism | Standard | Purpose |
+| :--- | :--- | :--- |
+| **mTLS 1.3** | RFC 8446 | Mutual authentication, confidentiality, integrity |
+| **Cipher Suites** | TLS_AES_256_GCM_SHA384, TLS_CHACHA20_POLY1305_SHA256 | Strong encryption, AEAD |
+| **Certificate Pinning** | SHA-256 fingerprint in L0 Gene Lock | Prevent MITM from compromised CA |
+| **SO_PEERCRED** | POSIX.1-2001 | Local identity verification (0ms overhead) |
+| **Key Rotation** | Ed25519, atomic transaction | Forward secrecy, key compromise recovery |
 
-**Layer 2: Static AST Review**
+### 3.2 Layer 2: Transport Security
 
-- Parses the AST, detecting system calls, network access, and file operations
-- Network domain whitelist verification
-- File path boundary detection
-- **Credential and sensitive information scanning**: Detects hardcoded high-entropy strings (suspected keys, passwords, tokens) and non-secure local area network IPs. Submissions are rejected immediately upon discovery of information leakage risks
-- Pass or flag as suspicious
+| Mechanism | Description |
+| :--- | :--- |
+| **Frame Integrity** | Each BIND-19 frame includes checksum |
+| **Anti-Replay** | Monotonically increasing Sequence ID per Channel |
+| **Version Negotiation** | Only highest common version accepted |
 
-**Layer 3: Trusted Environment Compilation**
+### 3.3 Layer 3: Capability Security
 
-- Compiles the reviewed source code into WASM bytecode within a TEE or official build pipeline
-- The compilation process is reproducible; any third party can independently verify the consistency between the compilation result and the source code
-- Pre-compiled binaries submitted locally by the submitter are not accepted
-- **Resource Protection**: The build pipeline enforces strict size and complexity limits on submitted source code and implements dynamic rate limiting based on the submitter's INTENT-7-SECURE certificate to prevent malicious high-frequency submissions from exhausting public compilation resources
+| Mechanism | Description |
+| :--- | :--- |
+| **Permission Mapping** | `capability_mapping.toml` defines allowed capabilities |
+| **Signature Verification** | Ed25519 signature verifies mapping authenticity |
+| **HITL Consensus** | Human-in-the-loop approval for high-risk operations |
+| **Key Rotation** | GPG-style key rotation with rollback protection |
 
-**Layer 4: Sandbox Dynamic Review**
+### 3.4 Layer 4: Semantic Security
 
-- Runs the compiled WASM bytecode in an isolated environment
-- Primarily monitors sequences of system calls and network access patterns, rather than complete business logic:
-  - Whether undeclared local files are read
-  - Whether network connections outside the whitelist are attempted
-  - Whether unexpected subprocesses are executed
-- Calls to external APIs use restricted behavioral observation, not full functional integration testing
-- Compares observed behavior against the Manifest declaration to detect deviations
-- Pass or flag as suspicious
-
-**Layer 5: Tuck Final Adjudication**
-
-- Aggregates review results from the previous four layers
-- Automatically assigns a grade (Grade 0-3) based on ecosystem security policy
-- Cryptographically signs and enters the adapter into the shared knowledge tree
-- Only when automatic determination is impossible, the submission is sent to the appeal queue
+| Mechanism | Description |
+| :--- | :--- |
+| **Schema Validation** | All INTENT-7 payloads validated against JSON Schema |
+| **Verb Whitelist** | Only defined ACTIONs are accepted |
+| **Trace Context** | W3C `traceparent` bound to TLS session |
 
 ---
 
-## 4. Appeal Mechanism
+## 4. Threat Model
 
-When a submitter disagrees with the automatic grading, they may initiate an appeal. Appeals are the only entry point for human intervention.
+### 4.1 Assumed Attacker Capabilities
 
-- The submitter files an appeal request with evidence
-- Human reviewers conduct a peer review
-- The review result updates the adapter's grading
-- Review conclusions form precedents that feed back into the optimization of review rules
+| Capability | Mitigation |
+| :--- | :--- |
+| **Network Packet Sniffing** | mTLS encrypts all traffic |
+| **Packet Injection** | mTLS provides integrity protection |
+| **Replay Attack** | Sequence ID in BIND-19 prevents replay |
+| **Man-in-the-Middle (MITM)** | mTLS with certificate pinning |
+| **Compromised CA** | Certificate pinning in L0 Gene Lock |
+| **Local Privilege Escalation** | SO_PEERCRED verifies UID/GID |
+| **Credential Theft** | Credentials isolated in Edge Gateway KMS |
 
----
+### 4.2 Not in Scope
 
-## 5. Layered Trust and Knowledge Trees
-
-The ecosystem provides multiple layers of knowledge trees; users choose their trust level on demand:
-
-| Knowledge Tree | Maintainer | Trust Level | Entry Characteristics |
-|:---|:---|:---|:---|
-| **Official Tree** | CommonIntents-144 Maintainers | Highest | Passes complete five-layer review + signature |
-| **Community Tree** | All Users | Popularity-driven | Auto-submitted, sorted by popularity; trust weight accumulated by usage frequency and cross-validation |
-| **Project Tree** | Project Maintainers | Higher than Community | Verified and signed by the project itself, serving specific scenarios |
-
-Users choose a loading strategy based on their own security requirements:
-
-- **Strict Mode**: Load only officially signed entries
-- **Balanced Mode**: Official entries first + community entries sorted by popularity
-- **Open Mode**: All entries, sorted by popularity
-
-Security policy is a runtime choice. The protocol does not mandate; users decide for themselves.
+| Attack Type | Reason |
+| :--- | :--- |
+| **Physical Compromise** | Out of scope; assume secure hardware |
+| **Side-Channel Attacks** | Mitigated by constant-time implementations (if applicable) |
+| **DoS Attacks** | Rate limiting at application layer |
 
 ---
 
-## 6. Vulnerability Feedback and Ecosystem Self-Healing
+## 5. Vulnerability Reporting
 
-Any user (human or AI) can submit a vulnerability report, marking a specific adapter CID as "at risk."
+### 5.1 Reporting Process
+**DO NOT** create public GitHub Issues for security vulnerabilities.
 
-- The weight of a marking action is determined by the identity trustworthiness of the initiator:
-  - Officially signed nodes (CommonIntents-144 maintainers): highest weight, effective immediately
-  - Verified long-term contributors (INTENT-7-SECURE mTLS certificate holders): medium weight
-  - Anonymous or newly registered nodes: lowest weight, serves only as a reference signal
-- There is an upper limit on the number of negative markings a single INTENT-7-SECURE certificate holder can initiate per unit of time. If a high-weight node exhibits high-frequency, large-scale abnormal marking behavior, its feedback weight is automatically frozen, the relevant adapters are protected with a flag, and the case is forcibly sent to the appeal queue
-- When the accumulation of negative markings of varying weights exceeds a dynamic threshold, the adapter is automatically downgraded or marked as unavailable
-- The threshold is dynamically adjusted by the security policy, not fixed to a single value
-- The AI review program continuously learns from feedback to improve review accuracy
-- Human maintainers periodically audit feedback data to optimize review rules
+Instead:
+1. **Email**: Send details to `security@commonintents.org`
+2. **Encrypt**: Use our PGP key (fingerprint in L0 Gene Lock)
+3. **Include**:
+   - Affected protocol and version
+   - Vulnerability description
+   - Steps to reproduce
+   - Potential impact
+   - Suggested fix (if any)
 
-**The ecosystem self-heals. The faster vulnerabilities are discovered, the stronger the protection.**
+### 5.2 Response Timeline
 
----
+| Milestone | Target | Maximum |
+| :--- | :---: | :---: |
+| **Initial Acknowledgment** | 24 hours | 48 hours |
+| **Severity Assessment** | 72 hours | 7 days |
+| **Critical Patch** | 14 days | 30 days |
+| **Minor Patch** | 30 days | 60 days |
+| **Public Disclosure** | After patch release | 90 days |
 
-## 7. Relationship with the Protocol Family
+### 5.3 Severity Rating
+We use [CVSS v3.1](https://www.first.org/cvss/) for severity assessment:
 
-| Protocol | How This System References It |
-|:---|:---|
-| **INTENT-7** | The intent types declared by adapters serve as the comparison baseline for AI semantic review |
-| **CAPABILITY-13** | The adapter's Manifest declares business risk level (`securityClass`), complementing the technical security level (Grade) |
-| **INTENT-7-SECURE** | mTLS identity verification ensures traceability of the submitter's identity |
-| **BIND-19** | Format negotiation ensures communication protocol consistency between review tools and adapters |
-
-**Grade is the technical security level** (determined automatically by the review process): what this adapter is technically capable of doing.  
-**`securityClass` is the business risk level** (declared by the adapter author in the Manifest): how dangerous this operation is in a business context.  
-Together, they form the complete risk profile of an adapter.
-
----
-
-## 8. Knowledge Tree Independence
-
-The mapping table knowledge tree is an independent public asset of the CommonIntents-144 ecosystem. It is physically isolated and logically independent from the internal knowledge trees of any specific implementation.
-
-- The mapping table knowledge tree stores only translation rules from INTENT-7 intents to native operations
-- It does not store any private memories, experiential principles, social relationships, or user profiles of any implementation
-- The review, signing, and distribution of the knowledge tree are defined by this security policy and do not depend on any external system
-- Any INTENT-7/CAPABILITY-13-compatible implementation can load entries from the mapping table knowledge tree; the management of its own internal knowledge tree is completely independent
+| Severity | CVSS Range | Example |
+| :---: | :--- | :--- |
+| **Critical** | 9.0 - 10.0 | Remote code execution without authentication |
+| **High** | 7.0 - 8.9 | Authentication bypass, private key leak |
+| **Medium** | 4.0 - 6.9 | Permission boundary violation |
+| **Low** | 0.1 - 3.9 | Information disclosure, DoS |
 
 ---
 
-## 9. Platform Independence and Content Addressing
+## 6. Cryptographic Key Management
 
-The authoritative source of the shared knowledge tree is the content hash, not the domain name or storage system of any specific service provider.
+### 6.1 Key Types
 
-- Each adapter, after passing review and being signed, is assigned a unique CID. The CID is the adapter's eternal identifier within the ecosystem
-- The authoritative entry point to the knowledge tree is a dynamic pointer based on IPNS or DNSLink, which ultimately resolves to the latest, cryptographically verified Root CID. When DNS is available, DNSLink provides a human-readable entry point. When DNS is unavailable, IPNS provides a purely decentralized alternative path. The two serve as mutual backups, ensuring the entry point never breaks
-- Any IPFS-compatible gateway, or any node holding a copy of the CID, can provide download and verification services for the adapter
-- Users load adapters by CID, unconcerned with where the file is hosted. As long as a single node holds a copy, the knowledge tree persists
-- The ecosystem does not depend on any single platform. Service providers may perish; CIDs endure
-- The genesis public key used to verify the officially signed knowledge tree is hardcoded and pinned within the client's binary distribution. Key rotation and revocation are enforced through on-chain multisig declarations or mandatory client version upgrades, ensuring the trust root does not rely on any external network request
+| Key Type | Algorithm | Purpose | Rotation |
+| :--- | :--- | :--- | :--- |
+| **L0 Creator Key** | Ed25519 | Sign capability mappings | 90 days recommended |
+| **TLS Certificate** | X.509 v3 with Ed25519/ECDSA | mTLS authentication | 1 year recommended |
+| **Trace ID** | 128-bit random | Transaction tracing | Per transaction |
 
----
+### 6.2 Key Rotation Procedure
+Key rotation follows the **CAPABILITY-13 Key Rotation Protocol**:
+1. **Generate New Key**: Create new Ed25519 key pair
+2. **Sign Transaction**: Create `KeyRotationTransaction` signed by old key
+3. **Multi-Signature**: Requires 3-of-3 signature from Seed instances
+4. **Atomic Replacement**: All mappings re-signed with new key
+5. **Announcement**: Publish rotation event via BIND-19 Control Frame
 
-## 10. Known Limitations
-
-This security policy defines the technical security levels and review standards for individual adapters.
-
-- In a multi-adapter orchestration environment, data flowing between nodes can create composite risks (e.g., Grade 1 reads a sensitive file, Grade 2 sends data over the network). This policy does not cover cross-adapter information flow control.
-- The detection and mitigation of composite risks are the responsibility of the orchestration engine (e.g., FlowModus) and fall outside the scope of individual adapter security review.
-
----
-
-## 11. Current Phase and Long-Term Vision
-
-**Current Phase**:
-
-- Human maintainers review all PRs (manual audit)
-- Humans sign the review results
-- Mapping table files are hosted on multiple independent nodes, with CID serving as the authoritative identifier
-- Cryptographic signatures are verified before loading mapping tables
-
-**Long-Term Vision**:
-
-- The full five-layer automated review pipeline is operational
-- Tuck performs automatic grading and signing
-- The IPLD shared knowledge tree is distributed over the IPFS network, addressed by CID
-- The shared knowledge tree does not accept user-locally-compiled binary files. Users submit source code; the official build pipeline compiles and signs it within a trusted environment, achieving reproducible builds
-- Signing keys are hosted in Hardware Security Modules (HSM) or Trusted Execution Environments (TEE); the signing process is protected by multi-signature or threshold signature mechanisms
-- The dynamic review environment hides virtualization features to prevent sandbox sniffing. The sandbox supports accelerated timeline simulation to detect time-locked delayed backdoors
-- The host interpreter process is hardened through operating system-level security mechanisms, ensuring that even if the WASM engine itself has vulnerabilities, they cannot penetrate the host system
-- Humans only handle appeals and rule optimization
+### 6.3 Key Compromise Response
+If a private key is compromised:
+1. **Immediate**: Revoke compromised key via emergency transaction
+2. **Short-Term**: Use backup key for signing
+3. **Long-Term**: Complete key rotation with new key pair
+4. **Notification**: Announce via all channels (GitHub, email, etc.)
 
 ---
 
-*This document is an ecosystem rule and evolves with the ecosystem. It does not define interaction semantics and is not a protocol specification.*
+## 7. Security Best Practices for Implementers
+
+### 7.1 Transport Layer
+```rust
+// Example: BIND-19 frame validation
+fn validate_frame(frame: &Frame) -> Result<(), SecurityError> {
+    // 1. Check version compatibility
+    if frame.version != BIND_19_VERSION {
+        return Err(SecurityError::VersionMismatch);
+    }
+    
+    // 2. Verify checksum
+    if !frame.verify_checksum() {
+        return Err(SecurityError::IntegrityCheckFailed);
+    }
+    
+    // 3. Check sequence ID (anti-replay)
+    if frame.sequence_id <= self.last_sequence_id[frame.channel_id] {
+        return Err(SecurityError::ReplayDetected);
+    }
+    
+    Ok(())
+}
+```
+
+### 7.2 Security Layer
+```rust
+// Example: mTLS configuration
+fn configure_mtls(config: &mut ServerConfig) {
+    // 1. Set minimum TLS version to 1.3
+    config.set_min_proto_version(ProtocolVersion::TLSv1_3);
+    
+    // 2. Restrict cipher suites
+    config.set_cipher_suites(&[
+        CipherSuite::TLS_AES_256_GCM_SHA384,
+        CipherSuite::TLS_CHACHA20_POLY1305_SHA256,
+    ]);
+    
+    // 3. Configure client certificate verification
+    config.set_client_certificate_verifier(
+        ClientCertificateVerifier::new()
+            .require_client_cert(true)
+            .add_trusted_fingerprint(gene_lock_fingerprint),
+    );
+}
+```
+
+### 7.3 Credential Isolation
+```rust
+// Example: Edge Gateway credential injection
+async fn inject_credentials(
+    request: &mut Request,
+    identity_label: &str,
+) -> Result<(), SecurityError> {
+    // 1. Parse identity label (namespace/identifier@instance-id)
+    let label = IdentityLabel::parse(identity_label)?;
+    
+    // 2. Retrieve decrypted credential from KMS
+    let credential = kms.retrieve_credential(&label).await?;
+    
+    // 3. Inject into HTTP header
+    request.headers_mut().insert(
+        HeaderName::from_static("authorization"),
+        HeaderValue::from_str(&format!("Bearer {}", credential.token))?,
+    );
+    
+    Ok(())
+}
+```
+
+---
+
+## 8. Security Audit Trail
+Every transaction in CI-144 generates an audit trail:
+
+| Field | Source | Purpose |
+| :--- | :--- | :--- |
+| `traceparent` | INTENT-7 metadata | Global transaction ID |
+| `TLS Session ID` | INTENT-7-SECURE | Cryptographic session binding |
+| `Certificate Fingerprint` | mTLS | Client/server identity |
+| `UID/GID` | SO_PEERCRED | Local process identity |
+| `Capability Mapping Hash` | CAPABILITY-13 | Permission configuration state |
+| `HXR Record` | INTENT-7 | Execution history |
+
+---
+
+## 9. Security Updates Policy
+
+### 9.1 Patch Release Criteria
+A security patch will be released when:
+- A vulnerability is reported and confirmed
+- The CVSS score is ≥ 4.0 (Medium)
+- A working exploit exists in the wild
+- The vulnerability affects a supported version
+
+### 9.2 Backward Compatibility
+Security patches will **NOT** break backward compatibility unless absolutely necessary.
+
+If a security fix requires breaking changes:
+- It will be released as a new major version
+- Migration guide will be provided
+- 6-month overlap support for previous major version
+
+---
+
+## 10. Security Contact Information
+- **Security Email**: `security@commonintents.org`
+- **PGP Key**: `pgp_keys.asc` in repository root
+- **Fingerprint**: Published in L0 Gene Lock
+- **Response Time**: As per Section 5.2
+
+---
+
+## 11. Acknowledgments
+We welcome responsible disclosure of security vulnerabilities.  
+Contributors will be credited in security advisories unless they wish to remain anonymous.
+
+---
+
+**"Trust must be proven, not assumed."**

@@ -9,6 +9,15 @@
 
 ---
 
+## 0. Defensive Publication (Prior Art)
+
+**CI-144 协议家族防御性公开声明**：[docs/prior-art-ci144.md](./docs/prior-art-ci144.md)
+
+公开日期 2026-09-06，覆盖四层协议栈核心创新点（四层解耦架构/扩展保留区/
+BIND-19 帧头与多路复用/CAPABILITY-13 HITL 队列/INTENT-7-SECURE SO_PEERCRED
+与凭证隔离/INTENT-7 语法语义分离等），构成先有技术证据，防止第三方抢注。
+
+---
 ## 1. Constitution & Vision
 **Core Belief**:  
 **"Trust must be proven, not assumed."**  

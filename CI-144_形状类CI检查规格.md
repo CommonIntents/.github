@@ -408,3 +408,57 @@ CI-2 → CI-3（布局）→ CI-1 → CI-5
 **附带**：它把一个悬了多轮的问题变成断言 —— **`Impass` 流向 `Reflection`**。
 
 **⇒ 通用教训**：**"这个文件搬对了吗"不能只靠符号集与快照**；**数据表必须逐条钉住**，否则覆盖率与符号数都会给出虚假的安全感。
+
+---
+
+## 10. 调度兜底：主循环里的第 12 处 fail-open（2026-09-18 实测）
+
+**发现方式不是读已声明的 12 条边，而是问"其余 37 对组合走到哪"** —— 这正是本链反复学到的同一件事。
+
+**实测（`run_cycle/mod.rs:653-681`）**：
+
+```rust
+if let Some(next_state) = self.transitions.get(&(state, condition)) { ... }
+else {
+    warn!("No transition rule found: ... returning to Perception");
+    self.current_state = HelixState::Perception;
+}
+// 紧接着：
+if self.current_state == HelixState::Perception {
+    outcome.done = true;
+    outcome.success = match &self.context.last_verdict {
+        Some(v) => v == "Met",
+        None => condition == TransitionCondition::Success,
+    };
+}
+```
+
+**⇒ 未定义的 `(state, condition)` = warn + 回 Perception + `done = true` + 可能 `success = true`。**
+**⇒ 从调用方看，它与"周期正常完成"无法区分。** 不是错误，也不是拒绝。
+
+**两条已断言（防静默变化）**：
+1. **删一条边 ⇒ 9 个测试红**（含 12 条逐边断言）⇒ **表是被调度读取的，不是它的平行描述**；
+2. **删边后不报错、`done`、落 Perception** ⇒ 兜底行为被钉住。
+
+**参数（穷尽性分母）**：**7 状态 × 7 条件 = 49 对，定义 12 条 ⇒ 37 对未定义。**
+
+**⇒ 类别**：这是**主循环里的 fail-open 候选**，而 **B0′ 的范围声明是"只扫反射弧 + 安全闸门/执行两链" ⇒ 主循环从未入范围**。
+**⇒ 未定项（诚实）**：**是否存在可达的未定义对，未审计** —— 取决于"哪些状态能返回哪些条件"。**这是去查，不是断言。**
+
+---
+
+## 11. 窗口语义的完整形态（v0.5）
+
+**一次拆分同时产生三件事，而它们的处理必须一致**，否则会训练出"见红就改键"：
+
+| 现象 | 窗口内 | 窗口关闭后 |
+|---|---|---|
+| 总量增长（目录级） | ✅ 额度内放行（`allowance`） | 额度失效 ⇒ 阻断 |
+| 单文件超预算（**新文件没键 / 改名后键过期**） | ⚠️ **WARN** | ❌ **FAIL** |
+| 豁免键指向不存在的路径（STALE） | ⚠️ **WARN** | ❌ **STALE_EXEMPTION，阻断** |
+
+**⇒ 理由**：三者都由**同一次改名**产生，而三者的修法都是**改 `ci/baseline.toml`** —— 比改代码容易 ⇒ **是绕过口**。
+**⇒ 窗口关闭时做一次对齐**，然后恢复全部阻断。
+**⇒ 实测**：窗口内退出 **0**；`CI_TODAY` 推过 `due` ⇒ 退出 **1**。
+
+**⇒ 单文件 ratchet 仍始终生效**（额度只放开目录聚合）—— 窗口不放开"任意文件变长"。

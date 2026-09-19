@@ -1,4 +1,5 @@
 # CI-144 协议家族 DNA.md
+> © 2026 CommonIntents Organization · Apache 2.0
 
 > **版本**：v1.0
 > **日期**：2026-08-29

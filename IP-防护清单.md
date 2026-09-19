@@ -24,28 +24,28 @@
 
 | 仓 | LICENSE | NOTICE | 带 CC BY-ND 的文档 |
 |---|---|---|---|
-| BIND-19 | ✅ Apache 2.0 逐字 | — | 5 |
-| Cellrix | ✅ Apache 2.0 逐字（**2026-09-20 由 MIT 换证**） | — | 0 |
+| BIND-19 | ✅ Apache 2.0 逐字 | 有 | 5 |
+| Cellrix | ✅ Apache 2.0 逐字（**2026-09-20 由 MIT 换证**） | 有 | 0 |
 | FlowModus | ✅ Apache 2.0 逐字 | 有 | 1 |
-| Helix-MCP-Learner | ✅ Apache 2.0 逐字（**2026-09-20 新增**） | — | 0 |
-| HelixECO-Glove | ✅ Apache 2.0 逐字 | — | 0 |
-| Tuck | ✅ Apache 2.0 逐字 | — | 0 |
-| anaphase-helix | ✅ Apache 2.0 逐字 | — | 0 |
+| Helix-MCP-Learner | ✅ Apache 2.0 逐字（**2026-09-20 新增**） | 有 | 0 |
+| HelixECO-Glove | ✅ Apache 2.0 逐字 | 有 | 0 |
+| Tuck | ✅ Apache 2.0 逐字 | 有 | 0 |
+| anaphase-helix | ✅ Apache 2.0 逐字 | 有 | 0 |
 | commonintents/.github | ✅ Apache 2.0 逐字 | 有 | 2 |
-| commonintents/BIND-19 | ✅ Apache 2.0 逐字 | — | 5 |
-| commonintents/CAPABILITY-13 | ✅ Apache 2.0 逐字 | — | 3 |
-| commonintents/INTENT-7 | ✅ Apache 2.0 逐字 | — | 3 |
-| commonintents/INTENT-7-SECURE | ✅ Apache 2.0 逐字 | — | 3 |
-| commonintents/PFP-xCF14 | ✅ Apache 2.0 逐字 | — | 1 |
-| commonintents/SAP-xCF14 | ✅ Apache 2.0 逐字 | — | 1 |
-| helix-mind | ✅ Apache 2.0 逐字 | — | 0 |
-| helix-tentacle | ✅ Apache 2.0 逐字 | — | 0 |
-| lodestone-md | ✅ Apache 2.0 逐字（**2026-09-20 由 MIT 换证**） | — | 0 |
-| lodestone-spec | ✅ Apache 2.0 逐字 | — | 0 |
+| commonintents/BIND-19 | ✅ Apache 2.0 逐字 | 有 | 5 |
+| commonintents/CAPABILITY-13 | ✅ Apache 2.0 逐字 | 有 | 3 |
+| commonintents/INTENT-7 | ✅ Apache 2.0 逐字 | 有 | 3 |
+| commonintents/INTENT-7-SECURE | ✅ Apache 2.0 逐字 | 有 | 3 |
+| commonintents/PFP-xCF14 | ✅ Apache 2.0 逐字 | 有 | 1 |
+| commonintents/SAP-xCF14 | ✅ Apache 2.0 逐字 | 有 | 1 |
+| helix-mind | ✅ Apache 2.0 逐字 | 有 | 0 |
+| helix-tentacle | ✅ Apache 2.0 逐字 | 有 | 0 |
+| lodestone-md | ✅ Apache 2.0 逐字（**2026-09-20 由 MIT 换证**） | 有 | 0 |
+| lodestone-spec | ✅ Apache 2.0 逐字 | 有 | 0 |
 | lumtract | ✅ Apache 2.0 逐字 | 有 | 0 |
-| phyt-DNA | ✅ Apache 2.0 逐字 | — | 1 |
+| phyt-DNA | ✅ Apache 2.0 逐字 | 有 | 1 |
 
-**小计**：LICENSE 逐字 Apache 2.0 **20/20** ✅（2026-09-20 达成）。NOTICE 仍仅 **3/20**。
+**小计**：LICENSE 逐字 Apache 2.0 **20/20** ✅ ｜ NOTICE **20/20** ✅（均为 2026-09-20 达成）。
 NOTICE 仅 **3/20**。
 
 ---
@@ -70,11 +70,29 @@ NOTICE 仅 **3/20**。
 
 **⇒ LICENSE 层面 20/20 达成。**
 
-### 🟠 B. NOTICE 缺失（17 个仓）
+### ✅ B. NOTICE —— **已关闭（2026-09-20）**
 
-Apache 2.0 不强制 NOTICE，但**它是版权人声明的落点**，也是第三方归属的落点。
-**⇒ 统一形状**（照 `commonintents/.github:NOTICE`）：`产品名 / Copyright <年> <版权人> / 许可声明 /（第三方的）归属段 + 免责`。
-**⚠️ 版权人写在 NOTICE，不要写进 LICENSE** —— LICENSE 必须逐字不动（见 §3 的教训）。
+Apache 2.0 不强制 NOTICE，但**它是版权人声明的落点** —— 尤其因为 LICENSE 必须逐字不动，
+版权人**只能**写在这里（或源文件头）。
+
+**统一形状**（照 `commonintents/.github:NOTICE` 与 `FlowModus:NOTICE`）：
+```
+产品名
+Copyright <年> <版权人>
+
+This product includes software developed by the <产品名> Community
+(https://github.com/<org>/<repo>).
+
+Licensed under the Apache License, Version 2.0 (the "License");
+… （Apache 2.0 样板通知）
+```
+
+**新增 17 份 + 归正 1 份**（`lumtract` 是唯一非标准形状：产品名占三行、版权人在第 4 行；
+现补成标准形状，**原有三行一字保留**并下移为描述行）。
+
+判据（可复跑）：每仓 `sed -n '2p' NOTICE` 必须匹配 `^Copyright`；覆盖率 20/20。
+
+**⚠️ 版权人绝不写进 LICENSE** —— LICENSE 必须逐字不动（见 §3 的教训）。
 
 ### 🟡 C. 规范/白皮书缺 IP 头
 
@@ -136,7 +154,7 @@ done
 ## 5. 未做（按顺序）
 
 1. `Cellrix` / `lodestone-md` / `Helix-MCP-Learner`：**先出第三方代码审计，再换证/新增**（缺口 A）
-2. 17 个仓补 NOTICE（缺口 B）
+2. ✅ 已做：NOTICE 20/20（缺口 B 关闭）
 3. 9 个仓的规范/白皮书补 CC BY-ND 头；两份白皮书优先（缺口 C）
 4. 源文件许可头（**实测：全工作区 0 个源文件带 Apache 头**；Apache 不强制，但 APPENDIX 推荐）
 5. 第三方代码 / 特有名词审计（规则：**仅灵感来源，不抄代码、不抄特有名词**）

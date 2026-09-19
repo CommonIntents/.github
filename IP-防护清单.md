@@ -25,9 +25,9 @@
 | 仓 | LICENSE | NOTICE | 带 CC BY-ND 的文档 |
 |---|---|---|---|
 | BIND-19 | ✅ Apache 2.0 逐字 | — | 5 |
-| Cellrix | 🔴 **MIT** | — | 0 |
+| Cellrix | ✅ Apache 2.0 逐字（**2026-09-20 由 MIT 换证**） | — | 0 |
 | FlowModus | ✅ Apache 2.0 逐字 | 有 | 1 |
-| Helix-MCP-Learner | ❌ **无 LICENSE** | — | 0 |
+| Helix-MCP-Learner | ✅ Apache 2.0 逐字（**2026-09-20 新增**） | — | 0 |
 | HelixECO-Glove | ✅ Apache 2.0 逐字 | — | 0 |
 | Tuck | ✅ Apache 2.0 逐字 | — | 0 |
 | anaphase-helix | ✅ Apache 2.0 逐字 | — | 0 |
@@ -40,27 +40,35 @@
 | commonintents/SAP-xCF14 | ✅ Apache 2.0 逐字 | — | 1 |
 | helix-mind | ✅ Apache 2.0 逐字 | — | 0 |
 | helix-tentacle | ✅ Apache 2.0 逐字 | — | 0 |
-| lodestone-md | 🔴 **MIT** | — | 0 |
+| lodestone-md | ✅ Apache 2.0 逐字（**2026-09-20 由 MIT 换证**） | — | 0 |
 | lodestone-spec | ✅ Apache 2.0 逐字 | — | 0 |
 | lumtract | ✅ Apache 2.0 逐字 | 有 | 0 |
 | phyt-DNA | ✅ Apache 2.0 逐字 | — | 1 |
 
-**小计**：LICENSE 逐字 Apache 2.0 **17/20**；非 Apache **2**；无 LICENSE **1**。
+**小计**：LICENSE 逐字 Apache 2.0 **20/20** ✅（2026-09-20 达成）。NOTICE 仍仅 **3/20**。
 NOTICE 仅 **3/20**。
 
 ---
 
 ## 2. 三类缺口与处置顺序
 
-### 🔴 A. LICENSE 不是 Apache 2.0 或没有（3 个仓）
+### ✅ A. LICENSE 不是 Apache 2.0 或没有 —— **已关闭（2026-09-20）**
 
-| 仓 | 现状 | 处置 | 前置 |
-|---|---|---|---|
-| `Cellrix` | MIT（21 行） | 换 Apache 2.0 逐字原文 | **先审计仓内是否含第三方代码**（含则必须保留其许可与归属，不能一并换掉） |
-| `lodestone-md` | MIT（21 行） | 同上 | 同上 |
-| `Helix-MCP-Learner` | **完全没有** | 新增 Apache 2.0 逐字原文 | 确认版权人写法与其余仓一致 |
+三个仓都先做了**第三方代码审计**，再动许可证。审计结论（判据：跟踪文件集，不是含构建产物的工作树）：
 
-**⇒ 换证是法律行为，不顺手做。** 三个仓都先出第三方代码审计结果再动。
+| 仓 | 换证前 | 跟踪文件 | 审计结论 | 处置 |
+|---|---|---|---|---|
+| `Cellrix` | MIT（sha 前 12 位 `5f471a6ed609`） | 209 | 作者全为你本人（非 fork）· 无外来版权头 · 依赖全宽松（serde/tokio/thiserror/wasm-bindgen…）· **无 GPL/AGPL** · 无 vendor · 无 submodule | 换 Apache 2.0 逐字 |
+| `lodestone-md` | MIT（`aa787199e0c1`） | 37 | 作者全为你本人 · **零第三方依赖**（Cargo.toml `[dependencies]` 为空）· 有一个 submodule，**其自带 Apache 2.0，不冲突** | 换 Apache 2.0 逐字 |
+| `Helix-MCP-Learner` | **无** | 30 | 10 个提交全为你本人 · 无外来版权头 · 依赖全宽松 · 无 vendor/submodule | **新增** Apache 2.0 逐字 |
+
+**⇒ 三个仓都无第三方许可需要保留、也无第三方归属需要搬运。** 换证不触碰任何他人权利。
+
+**旁证（`Helix-MCP-Learner` 的一个真缺陷）**：它的 README 顶部本就有 `License: Apache-2.0`
+徽章并**链接到 `LICENSE`** —— 而那个文件**并不存在**。**这次加证让那个声明第一次成真。**
+（"声明指向不存在的文件"与本项目反复记录的那类缺陷同族。）
+
+**⇒ LICENSE 层面 20/20 达成。**
 
 ### 🟠 B. NOTICE 缺失（17 个仓）
 
@@ -132,6 +140,21 @@ done
 3. 9 个仓的规范/白皮书补 CC BY-ND 头；两份白皮书优先（缺口 C）
 4. 源文件许可头（**实测：全工作区 0 个源文件带 Apache 头**；Apache 不强制，但 APPENDIX 推荐）
 5. 第三方代码 / 特有名词审计（规则：**仅灵感来源，不抄代码、不抄特有名词**）
+
+---
+
+## 6. 版权人映射（**NOTICE 那一步用，但需你确认**）
+
+实测：**GitHub org → 正式版权人**，且已有先例可循。**我不自行发明**，先列出来。
+
+| org | 仓 | NOTICE 里现用的写法 |
+|---|---|---|
+| `CommonIntents` | `BIND-19` · `commonintents/{.github, BIND-19, CAPABILITY-13, INTENT-7, INTENT-7-SECURE, PFP-xCF14, SAP-xCF14}`（8 个） | **有先例**：`Copyright 2026 CommonIntents Organization` |
+| `Jasonmilk` | `Cellrix` · `FlowModus` · `Helix-MCP-Learner` · `HelixECO-Glove` · `Tuck` · `anaphase-helix` · `helix-mind` · `helix-tentacle` · `phyt-DNA`（9 个） | **有先例**：`Copyright 2026 Jason Milk` |
+| `Lumtract` | `lumtract`（1 个） | **有先例**：`Copyright 2026 Lumtract Organization` |
+| `lodestone-protocol` | `lodestone-md` · `lodestone-spec`（2 个） | ⚠️ **无先例** —— 该 org 下没有任何 © 行或 NOTICE。**需要你定写法** |
+
+**⇒ 除 `lodestone-protocol` 外，其余 18 个仓都有先例可照。** 那一组我不编。
 
 ---
 

@@ -1,0 +1,71 @@
+# 跨器官 / 跨目录的同一份 schema 副本，以及它们的判据。
+#
+# 为什么需要这张表：同一份 `.proto` 在两个器官各存一份，而**没有任何东西比对它们**。
+# 实测（2026-09-20）：两对跨器官副本的**注释都已经漂移**，其中一对里甚至有人写下
+# 「the two copies' comments have already drifted apart … only the field set matters
+# for the wire, but the drift is worth knowing about」—— 写下来了，但没人处理。
+#
+# 判据分两类，因为**两种关系要求的东西不同**：
+#
+#   mode = "field-set"  ← 跨器官
+#     允许注释不同：各自的注释引用**自己仓**的 ADR 编号（`P10a (ADR-0001)`
+#     vs `P0 (ADR-0010)`），这是合法且有用的信息。强行逐字一致会逼一个器官
+#     使用另一个器官的编号。
+#     **断言的是"字段集"**——去掉注释与空行后必须逐字节相同。
+#     静默的字段漂移正是要防的东西（ADR-0043 T5b：字段必须两边都在，
+#     否则 wire 什么都不传而丢失是静默的）。
+#
+#   mode = "byte"       ← 同仓的"源 → 发布副本"
+#     同一份文件在同一仓里出现两次（构建源 + 对外发布），没有理由不同，
+#     所以要求逐字节一致。
+#
+# `source` 是**权威**那一份：它变了，另一份没跟上 ⇒ 红。
+
+[[pair]]
+name    = "helix_mind.proto"
+mode    = "field-set"
+source  = "helix-mind/crates/helix-mind-api/proto/helix_mind.proto"
+vendored = "anaphase-helix/proto/helix_mind.proto"
+why     = "helix-mind 实现这个 API，anaphase 是调用方，所以源在 helix-mind"
+
+[[pair]]
+name    = "tentacle.proto"
+mode    = "field-set"
+source  = "helix-tentacle/crates/tentacle-transport-grpc/proto/tentacle.proto"
+vendored = "anaphase-helix/proto/tentacle.proto"
+why     = "tentacle 实现这个 API，anaphase 是调用方，所以源在 helix-tentacle"
+
+[[pair]]
+name    = "flowmodus supplier.proto（构建源 → 发布）"
+mode    = "byte"
+source  = "FlowModus/flowmodus-rs/proto/supplier.proto"
+vendored = "FlowModus/schemas/supplier.proto"
+why     = "同仓两处；schemas/ 是对外发布的那份，没有理由与构建源不同"
+
+[[pair]]
+name    = "flowmodus routing.proto（构建源 → 发布）"
+mode    = "byte"
+source  = "FlowModus/flowmodus-rs/proto/routing.proto"
+vendored = "FlowModus/schemas/routing.proto"
+why     = "同仓两处"
+
+[[pair]]
+name    = "flowmodus registry.proto（构建源 → 发布）"
+mode    = "byte"
+source  = "FlowModus/flowmodus-rs/proto/registry.proto"
+vendored = "FlowModus/schemas/registry.proto"
+why     = "同仓两处"
+
+[[pair]]
+name    = "flowmodus metrics.proto（构建源 → 发布）"
+mode    = "byte"
+source  = "FlowModus/flowmodus-rs/proto/metrics.proto"
+vendored = "FlowModus/schemas/metrics.proto"
+why     = "同仓两处"
+
+[[pair]]
+name    = "flowmodus gossip.proto（构建源 → 发布）"
+mode    = "byte"
+source  = "FlowModus/flowmodus-rs/proto/gossip.proto"
+vendored = "FlowModus/schemas/gossip.proto"
+why     = "同仓两处"

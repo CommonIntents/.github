@@ -46,7 +46,7 @@
 |---|---|---|
 | **I5** | 覆盖范围 = 声明范围 | 推广 `commit-msg.scope.sh` 那类断言到其余声明 |
 | **I6** | 缺失不得比显式未知更宽松（单调性） | R005 侧已修，要的是**能抓到回归**的断言 |
-| **I7** | 「闸门在不在」必须可区分于「闸门放行」 | 本日新发现：Tuck `GateVerdict` **无 `Err` 变体** ⇒ 若"判不出"不可表达，**那本身就是发现**，要登记而非发明 API |
+| **I7** | 「闸门在不在」必须可区分于「闸门放行」 | 本日新发现：**Anaphase `GateVerdict`**（`src/security.rs:58`）与 **Tuck `GateDecision`**（`crates/tuck-core/src/anaphase_bridge.rs:153`）**均无 `Err`/「判不出」变体** ⇒ 若"判不出"不可表达，**那本身就是发现**，要登记而非发明 API。**⚠️ 原文写作「Tuck `GateVerdict`」是错的 —— Tuck 里 `GateVerdict` 0 命中；见 K-106** |
 
 **硬约束（brief 已钉死）**：不新建检查器、不碰 `ci/`、不改任何闸门行为（`GUARDED` 正则一字不动）、**不用 `git reset --hard`**、每条必须证明"能红"、已被既有断言覆盖的就引用而不是复制。
 

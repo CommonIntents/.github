@@ -3,6 +3,8 @@
 > 建立：2026-09-20 ｜ 依据：`CI-144_跨链生命周期与反馈契约.md` §10/§11/§12 · `CI-144_合拢坑记录.md` K-059…K-104 · `CI-144_默认放行分类表.md`
 > **性质**：提案。`RNA.md` 第 3 条铁律「**禁止修宪 —— 不得修改 DNA.md（可提议，人类拥有最终决策权）**」在七仓重复（helix-mind / lodestone-md / phyt-DNA / Helix-MCP-Learner / helix-tentacle / Tuck / anaphase），`Cellrix/docs/DNA.md:110` 另有「AI 不得修改 DNA.md（宪法）」。
 > **⇒ 本文件是提案，DNA.md 一字未动**（`commonintents/.github/DNA.md` sha256 前 32 位 `19c4acd9fcb3794ff7c221f08fe7bc24`）。
+> **⚠️ 2026-09-21 更新**：该提案 **A/C/B 已获人类批准并落地**（D/E 仍观察）⇒ **上述 sha256 已失效**。
+> 当前 DNA.md 为 **v1.1**，sha256 前 32 位 **`16991bc7b7648b4e45d5236875514fc3`**。裁决见 `docs/ADR-0001-DNA修订-A-C采纳-B单列.md`。
 
 ---
 
@@ -136,5 +138,5 @@
 |---|---|
 | **RFC 9413** | ✅ **一手取到原文**（`rfc-editor.org/rfc/rfc9413.txt`，742 行），§2.2 引文为原文，章节号逐条核过 |
 | **实例 1–7、B 六例、C 四例** | ✅ 均来自本会话的实测与逐字读码，各自有 file:line 或变异证据，可回到 `CI-144_合拢坑记录.md` 对应 K 条 |
-| `DNA.md` 未改动 | ✅ `git status` 为空；sha256 前 32 位 `19c4acd9fcb3794ff7c221f08fe7bc24`（可复核） |
+| `DNA.md` 未改动 | ~~✅ `git status` 为空；sha256 前 32 位 `19c4acd9fcb3794ff7c221f08fe7bc24`（可复核）~~ **⚠️ 已于 2026-09-21 失效**：A/C/B 获批落地，DNA.md 现为 v1.1，sha256 前 32 位 `16991bc7b7648b4e45d5236875514fc3`（见 `docs/ADR-0001-DNA修订-A-C采纳-B单列.md`）。**此行的历史值为当时实测，保留不改** |
 | **未核** | 本提案**未**引用 CWE-636、IEC 61511、ArchUnit（那三项在本会话中始终未核实，故不进入本提案的依据） |

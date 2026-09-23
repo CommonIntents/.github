@@ -1,12 +1,17 @@
 # CI-144 协议家族 RNA.md
 > © 2026 CommonIntents Organization · Apache 2.0
 
-> **版本**：v1.0
-> **日期**：2026-08-29
-> **继承自**：Helix-Mind RNA.md（方法论机制复用）
+> **版本**：v1.1
+> **日期**：2026-08-29（v1.0）｜ 2026-09-23（v1.1：锚定 phyt-DNA v1.0 —— 补方法论归属；**铁律内容未变**）
+> **继承自**：Helix-Mind RNA.md（**机制模板**——三层加载协议）
 > **性质**：CI-144 协议家族的 AI 协作铁律与三层加载协议
-> **所属方法论**：DNA 自生长方法论 v2.0（协议家族适配版）
+> **所属方法论**：**phyt-DNA v1.0**（方法论锚点项目 `https://github.com/Jasonmilk/phyt-DNA`）
 > **适用范围**：CommonIntents 全部协议仓库（INTENT-7 / BIND-19 / INTENT-7-SECURE / CAPABILITY-13）
+>
+> **⇒ 归属订正（2026-09-23）**：原写「所属方法论：DNA 自生长方法论 v2.0（协议家族适配版）」——
+> 与 `DNA.md` 同一处错误：把 **Helix-Mind 那份文档的版本号**当成了**方法论的版本号**。
+> 两者不在同一层：`Helix-Mind RNA v?` 是一份**文档**，`phyt-DNA v1.0` 是**方法论**。
+> ⇒ 本文件与 `DNA.md` 同时锚定 phyt-DNA v1.0；**8 条协作铁律内容一字未动**。
 
 ## RNA 的角色
 
